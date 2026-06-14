@@ -1,4 +1,4 @@
-from flask import render_template, jsonify, send_file
+from flask import Flask, jsonify, send_file, render_template
 import ccxt
 import pandas as pd
 import time
@@ -11,6 +11,8 @@ app = Flask(__name__)
 # وضعیت اسکنرها
 futures_status = {"running": False, "progress": 0, "results": [], "error": None}
 spot_status = {"running": False, "progress": 0, "results": [], "error": None}
+
+
 
 def calculate_ema(data, period):
     return data.ewm(span=period, adjust=False).mean().iloc[-1]
@@ -130,6 +132,8 @@ def scan_spot():
         spot_status['running'] = False
 
 # ========== ROUTES ==========
+
+
 
 @app.route('/')
 def index():
