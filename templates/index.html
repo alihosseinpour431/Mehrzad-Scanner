@@ -3,176 +3,790 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Mehrzad Scanner</title>
+    <title>XT Scanner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
-        body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-            color: #fff;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        :root {
+            /* Trading Terminal Palette */
+            --bg-base: #0b0e14;
+            --bg-surface: #131722;
+            --bg-elevated: #1c2030;
+            --bg-hover: #252a3d;
+            
+            --border-subtle: #252a3d;
+            --border-default: #2e3448;
+            --border-strong: #3d4459;
+            
+            --text-primary: #d1d4dc;
+            --text-secondary: #787b86;
+            --text-muted: #545863;
+            --text-disabled: #3d4459;
+            
+            /* Trading Colors */
+            --bull: #26a69a;
+            --bull-bg: rgba(38, 166, 154, 0.1);
+            --bear: #ef5350;
+            --bear-bg: rgba(239, 83, 80, 0.1);
+            
+            --accent: #f0b90b;
+            --accent-bg: rgba(240, 185, 11, 0.08);
+            --accent-border: rgba(240, 185, 11, 0.3);
+            
+            --blue: #2962ff;
+            --blue-bg: rgba(41, 98, 255, 0.1);
+            
+            --mono: 'JetBrains Mono', 'Courier New', monospace;
+            --sans: 'Inter', 'Vazirmatn', sans-serif;
+            --fa: 'Vazirmatn', sans-serif;
+        }
+        
+        html, body {
+            font-family: var(--sans);
+            background: var(--bg-base);
+            color: var(--text-primary);
             min-height: 100vh;
-            padding: 15px;
+            font-size: 14px;
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .container { max-width: 700px; margin: 0 auto; }
-        h1 { text-align: center; margin-bottom: 10px; color: #e94560; font-size: 24px; }
-        .datetime { text-align: center; color: #aaa; margin-bottom: 20px; font-size: 14px; }
         
-        .scanner-section {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 15px;
+        /* Grid Background Pattern */
+        body {
+            background-image: 
+                linear-gradient(rgba(37, 42, 61, 0.3) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(37, 42, 61, 0.3) 1px, transparent 1px);
+            background-size: 40px 40px;
+            background-position: center center;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
             padding: 20px;
+        }
+        
+        /* ===== TOP BAR (Ticker Style) ===== */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 16px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-        }
-        .section-title { font-size: 18px; margin-bottom: 15px; color: #fff; }
-        
-        .btn {
-            width: 100%;
-            padding: 15px;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            margin-bottom: 10px;
-        }
-        .btn-futures { background: linear-gradient(135deg, #e94560, #c73e54); color: white; }
-        .btn-spot { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
-        .btn-download { background: linear-gradient(135deg, #0f3460, #1a4f8a); color: white; }
-        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
-        .btn:disabled { background: #555; cursor: not-allowed; transform: none; }
-        
-        .progress-container {
-            background: rgba(0,0,0,0.3);
-            border-radius: 10px;
-            padding: 15px;
-            margin: 15px 0;
-            display: none;
-        }
-        .progress-bar {
-            width: 100%;
-            height: 25px;
-            background: #333;
-            border-radius: 15px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-secondary);
             overflow: hidden;
+            position: relative;
         }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #e94560, #f39c12, #2ecc71);
-            transition: width 0.5s;
+        
+        .top-bar::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            opacity: 0.5;
+        }
+        
+        .status-live {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--bull);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .live-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--bull);
+            border-radius: 50%;
+            animation: pulse 1.5s infinite;
+            box-shadow: 0 0 8px var(--bull);
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.85); }
+        }
+        
+        .top-bar .datetime {
+            direction: ltr;
+            color: var(--text-secondary);
+        }
+        
+        /* ===== HEADER ===== */
+        .header {
+            text-align: center;
+            padding: 30px 0 40px;
+            position: relative;
+        }
+        
+        .logo-mark {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .logo-icon {
+            width: 44px;
+            height: 44px;
+            background: linear-gradient(135deg, var(--accent) 0%, #ff8a00 100%);
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-weight: bold;
-            font-size: 13px;
+            font-weight: 800;
+            font-size: 18px;
+            color: var(--bg-base);
+            font-family: var(--mono);
+            box-shadow: 0 4px 20px rgba(240, 185, 11, 0.2);
         }
-        .status { text-align: center; margin: 10px 0; font-size: 14px; color: #aaa; }
-        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
-        .stat-box {
-            background: rgba(255,255,255,0.1);
-            padding: 10px;
-            border-radius: 8px;
-            text-align: center;
-        }
-        .stat-value { font-size: 20px; font-weight: bold; color: #e94560; }
-        .stat-label { font-size: 11px; color: #aaa; margin-top: 3px; }
         
-        .divider { text-align: center; font-size: 20px; margin: 15px 0; color: #555; }
-        .hidden { display: none; }
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-primary);
+            letter-spacing: -0.5px;
+            font-family: var(--sans);
+        }
+        
+        h1 span {
+            color: var(--accent);
+        }
+        
+        .subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            font-family: var(--mono);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        
+        /* ===== SCANNER CARD ===== */
+        .scanner-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            transition: border-color 0.2s;
+        }
+        
+        .scanner-card:hover {
+            border-color: var(--border-default);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-subtle);
+            background: var(--bg-elevated);
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .card-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .icon-futures {
+            background: var(--bull-bg);
+            color: var(--bull);
+            border: 1px solid rgba(38, 166, 154, 0.2);
+        }
+        
+        .icon-spot {
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid rgba(41, 98, 255, 0.2);
+        }
+        
+        .card-badge {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-futures {
+            background: var(--bull-bg);
+            color: var(--bull);
+            border: 1px solid rgba(38, 166, 154, 0.2);
+        }
+        
+        .badge-spot {
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid rgba(41, 98, 255, 0.2);
+        }
+        
+        .card-body {
+            padding: 18px;
+        }
+        
+        /* Filter Info */
+        .filter-info {
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            padding: 10px 12px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-right: 2px solid var(--accent);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            line-height: 1.8;
+        }
+        
+        .filter-info code {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        /* ===== BUTTONS ===== */
+        .btn {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid transparent;
+            border-radius: 6px;
+            font-family: var(--sans);
+            font-size: 13px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            letter-spacing: 0.3px;
+        }
+        
+        .btn-futures {
+            background: var(--bull);
+            color: white;
+            border-color: var(--bull);
+        }
+        .btn-futures:hover {
+            background: #2bbbad;
+            box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
+        }
+        
+        .btn-spot {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+        .btn-spot:hover {
+            background: #3d73ff;
+            box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
+        }
+        
+        .btn-download {
+            background: transparent;
+            color: var(--text-primary);
+            border: 1px solid var(--border-default);
+            margin-top: 10px;
+        }
+        .btn-download:hover {
+            background: var(--bg-elevated);
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .btn:active {
+            transform: translateY(1px);
+        }
+        
+        .btn:disabled {
+            background: var(--bg-elevated);
+            color: var(--text-disabled);
+            border-color: var(--border-subtle);
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+        
+        /* ===== PROGRESS ===== */
+        .progress-container {
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 16px;
+            margin: 16px 0;
+            display: none;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-family: var(--mono);
+            font-size: 11px;
+        }
+        
+        .progress-label {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .progress-percent {
+            color: var(--accent);
+            font-weight: 700;
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--bg-elevated);
+            border-radius: 2px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--bull), var(--accent));
+            border-radius: 2px;
+            transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; right: 0;
+            width: 20px; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4));
+            animation: shimmer 1.5s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { transform: translateX(-40px); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: translateX(40px); opacity: 0; }
+        }
+        
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        
+        .stat-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border-subtle);
+            border-radius: 4px;
+            padding: 10px 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            font-family: var(--mono);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-value {
+            font-family: var(--mono);
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        .stat-value.accent {
+            color: var(--accent);
+        }
+        
+        .status {
+            text-align: center;
+            margin-top: 12px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            letter-spacing: 0.5px;
+        }
+        
+        .status.scanning {
+            color: var(--accent);
+        }
+        
+        .status.success {
+            color: var(--bull);
+        }
+        
+        .status.error {
+            color: var(--bear);
+        }
+        
+        /* ===== DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            color: var(--text-muted);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 2px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+        
+        .hidden { display: none !important; }
+        
+        /* ===== RESULTS TABLE ===== */
+        .results-wrapper {
+            margin-top: 16px;
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 14px;
+            background: var(--bg-elevated);
+            border-bottom: 1px solid var(--border-subtle);
+            font-family: var(--mono);
+            font-size: 11px;
+        }
+        
+        .results-title {
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .results-count {
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .table-scroll {
+            overflow-x: auto;
+        }
         
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
-            background: rgba(255,255,255,0.05);
-            border-radius: 10px;
-            overflow: hidden;
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+        
+        thead {
+            background: var(--bg-base);
+        }
+        
+        th {
+            padding: 10px 8px;
+            font-size: 10px;
+            font-weight: 600;
+            text-align: center;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid var(--border-subtle);
+            white-space: nowrap;
+        }
+        
+        th:first-child {
+            text-align: center;
+            width: 40px;
+            color: var(--text-muted);
+        }
+        
+        td {
+            padding: 10px 8px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+        
+        td:first-child {
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        tbody tr {
+            transition: background 0.15s;
+        }
+        
+        tbody tr:hover {
+            background: var(--bg-elevated);
+        }
+        
+        tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .symbol-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.15s;
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+        
+        .symbol-link:hover {
+            color: var(--accent);
+            background: var(--accent-bg);
+        }
+        
+        .price {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .ema {
+            color: var(--text-secondary);
+        }
+        
+        .dist-positive {
+            color: var(--bull);
+            font-weight: 600;
+        }
+        
+        .dist-negative {
+            color: var(--bear);
+            font-weight: 600;
+        }
+        
+        .mcap {
+            color: var(--text-secondary);
             font-size: 11px;
         }
-        th, td { padding: 8px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
-        th { background: #e94560; font-size: 10px; }
-        tr:hover { background: rgba(255,255,255,0.1); }
-        a { color: #4fc3f7; text-decoration: none; font-weight: bold; }
-        a:hover { text-decoration: underline; }
+        
+        /* Empty state */
+        .empty-state {
+            padding: 30px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-family: var(--mono);
+            font-size: 12px;
+        }
+        
+        /* ===== FOOTER ===== */
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border-subtle);
+            margin-top: 20px;
+        }
+        
+        .footer span {
+            color: var(--accent);
+        }
+        
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 600px) {
+            .container { padding: 12px; }
+            h1 { font-size: 24px; }
+            .logo-icon { width: 36px; height: 36px; font-size: 15px; }
+            .card-body { padding: 14px; }
+            .card-header { padding: 12px 14px; }
+            table { font-size: 11px; }
+            th, td { padding: 8px 6px; }
+            .stat-value { font-size: 16px; }
+            .top-bar { font-size: 10px; padding: 8px 12px; }
+        }
+        
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border-default);
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--border-strong);
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>📊 Mehrzad Scanner</h1>
-        <div class="datetime" id="datetime"></div>
         
-        <!-- Futures Section -->
-        <div class="scanner-section">
-            <div class="section-title">📈 XT Futures Scanner</div>
-            <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">
-                فیلتر ۱ (روزانه): Price > EMA(50)<br>
-                فیلتر ۲ (ساعتی): Price > EMA(50) > EMA(200)
+        <!-- Top Bar -->
+        <div class="top-bar">
+            <div class="status-live">
+                <span class="live-dot"></span>
+                <span>LIVE</span>
             </div>
-            
-            <button class="btn btn-futures" id="btnFutures" onclick="startFutures()">
-                🔍 شروع اسکن Futures
-            </button>
-            
-            <div class="progress-container" id="progressFuturesContainer">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressFutures">0%</div>
-                </div>
-                <div class="stats">
-                    <div class="stat-box">
-                        <div class="stat-value" id="scannedFutures">0</div>
-                        <div class="stat-label">بررسی شده</div>
-                    </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="foundFutures">0</div>
-                        <div class="stat-label">پیدا شده</div>
-                    </div>
-                </div>
-                <div class="status" id="statusFutures">آماده</div>
-            </div>
-            
-            <button class="btn btn-download hidden" id="btnDownloadFutures" onclick="downloadFutures()">
-                📥 دانلود PDF Futures
-            </button>
-            
-            <div id="resultsFutures"></div>
+            <div>XT EXCHANGE SCANNER</div>
+            <div class="datetime" id="datetime">--:--:--</div>
         </div>
         
-        <div class="divider">─────────────────</div>
+        <!-- Header -->
+        <div class="header">
+            <div class="logo-mark">
+                <div class="logo-icon">XT</div>
+                <h1>XT <span>Scanner</span></h1>
+            </div>
+            <div class="subtitle">Technical Analysis Terminal</div>
+        </div>
         
-        <!-- Spot Section -->
-        <div class="scanner-section">
-            <div class="section-title">💰 XT Spot Scanner</div>
-            <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">
-                فیلتر (روزانه): Price > EMA(50)<br>
-                + مارکت کپ از CoinMarketCap
+        <!-- Futures Card -->
+        <div class="scanner-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon icon-futures">📈</div>
+                    <span>Futures Scanner</span>
+                </div>
+                <span class="card-badge badge-futures">USDT-M</span>
             </div>
             
-            <button class="btn btn-spot" id="btnSpot" onclick="startSpot()">
-                🔍 شروع اسکن Spot
-            </button>
-            
-            <div class="progress-container" id="progressSpotContainer">
-                <div class="progress-bar">
-                    <div class="progress-fill" id="progressSpot">0%</div>
+            <div class="card-body">
+                <div class="filter-info">
+                    <code>D1</code> Price &gt; EMA(50) &nbsp;·&nbsp; 
+                    <code>H1</code> Price &gt; EMA(50) &gt; EMA(200)
                 </div>
-                <div class="stats">
-                    <div class="stat-box">
-                        <div class="stat-value" id="scannedSpot">0</div>
-                        <div class="stat-label">بررسی شده</div>
+                
+                <button class="btn btn-futures" id="btnFutures" onclick="startFutures()">
+                    <span>▶</span>
+                    <span>START SCAN</span>
+                </button>
+                
+                <div class="progress-container" id="progressFuturesContainer">
+                    <div class="progress-header">
+                        <span class="progress-label">Scanning</span>
+                        <span class="progress-percent" id="progressPercentFutures">0%</span>
                     </div>
-                    <div class="stat-box">
-                        <div class="stat-value" id="foundSpot">0</div>
-                        <div class="stat-label">پیدا شده</div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFutures" style="width: 0%"></div>
                     </div>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Scanned</span>
+                            <span class="stat-value" id="scannedFutures">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Found</span>
+                            <span class="stat-value accent" id="foundFutures">0</span>
+                        </div>
+                    </div>
+                    <div class="status" id="statusFutures">Ready</div>
                 </div>
-                <div class="status" id="statusSpot">آماده</div>
+                
+                <button class="btn btn-download hidden" id="btnDownloadFutures" onclick="downloadFutures()">
+                    <span>⬇</span>
+                    <span>DOWNLOAD PDF</span>
+                </button>
+                
+                <div id="resultsFutures"></div>
+            </div>
+        </div>
+        
+        <div class="divider">◆ ◆ ◆</div>
+        
+        <!-- Spot Card -->
+        <div class="scanner-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon icon-spot">💰</div>
+                    <span>Spot Scanner</span>
+                </div>
+                <span class="card-badge badge-spot">SPOT</span>
             </div>
             
-            <button class="btn btn-download hidden" id="btnDownloadSpot" onclick="downloadSpot()">
-                📥 دانلود PDF Spot
-            </button>
-            
-            <div id="resultsSpot"></div>
+            <div class="card-body">
+                <div class="filter-info">
+                    <code>D1</code> Price &gt; EMA(50) &nbsp;·&nbsp; 
+                    <code>CMC</code> Market Cap Filter
+                </div>
+                
+                <button class="btn btn-spot" id="btnSpot" onclick="startSpot()">
+                    <span>▶</span>
+                    <span>START SCAN</span>
+                </button>
+                
+                <div class="progress-container" id="progressSpotContainer">
+                    <div class="progress-header">
+                        <span class="progress-label">Scanning</span>
+                        <span class="progress-percent" id="progressPercentSpot">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressSpot" style="width: 0%"></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Scanned</span>
+                            <span class="stat-value" id="scannedSpot">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Found</span>
+                            <span class="stat-value accent" id="foundSpot">0</span>
+                        </div>
+                    </div>
+                    <div class="status" id="statusSpot">Ready</div>
+                </div>
+                
+                <button class="btn btn-download hidden" id="btnDownloadSpot" onclick="downloadSpot()">
+                    <span>⬇</span>
+                    <span>DOWNLOAD PDF</span>
+                </button>
+                
+                <div id="resultsSpot"></div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            XT SCANNER <span>v2.0</span> · TERMINAL EDITION · 2026
         </div>
     </div>
 
@@ -182,11 +796,10 @@
         
         function updateDateTime() {
             const now = new Date();
-            document.getElementById('datetime').textContent = 
-                now.toLocaleString('fa-IR', { 
-                    year: 'numeric', month: '2-digit', day: '2-digit',
-                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
-                });
+            const h = String(now.getHours()).padStart(2, '0');
+            const m = String(now.getMinutes()).padStart(2, '0');
+            const s = String(now.getSeconds()).padStart(2, '0');
+            document.getElementById('datetime').textContent = `${h}:${m}:${s}`;
         }
         setInterval(updateDateTime, 1000);
         updateDateTime();
@@ -195,7 +808,7 @@
         function startFutures() {
             document.getElementById('btnFutures').disabled = true;
             document.getElementById('progressFuturesContainer').style.display = 'block';
-            document.getElementById('statusFutures').textContent = '⏳ در حال اتصال...';
+            setStatus('statusFutures', 'Connecting...', 'scanning');
             document.getElementById('btnDownloadFutures').classList.add('hidden');
             document.getElementById('resultsFutures').innerHTML = '';
             
@@ -207,7 +820,7 @@
                     }
                 })
                 .catch(err => {
-                    document.getElementById('statusFutures').textContent = '❌ خطا: ' + err;
+                    setStatus('statusFutures', 'Error: ' + err, 'error');
                     document.getElementById('btnFutures').disabled = false;
                 });
         }
@@ -221,20 +834,19 @@
                     const scanned = Math.floor((progress / 100) * total);
                     
                     document.getElementById('progressFutures').style.width = progress + '%';
-                    document.getElementById('progressFutures').textContent = progress + '%';
+                    document.getElementById('progressPercentFutures').textContent = progress + '%';
                     document.getElementById('scannedFutures').textContent = scanned;
                     document.getElementById('foundFutures').textContent = data.results.length;
                     
                     if (data.error) {
-                        document.getElementById('statusFutures').textContent = '❌ خطا: ' + data.error;
+                        setStatus('statusFutures', 'Error: ' + data.error, 'error');
                         clearInterval(futuresInterval);
                         document.getElementById('btnFutures').disabled = false;
                     }
                     
                     if (progress === 100 && !data.running) {
                         clearInterval(futuresInterval);
-                        document.getElementById('statusFutures').textContent = 
-                            `✅ اسکن کامل شد - ${data.results.length} ارز پیدا شد`;
+                        setStatus('statusFutures', `Scan complete — ${data.results.length} symbols found`, 'success');
                         document.getElementById('btnFutures').disabled = false;
                         document.getElementById('btnDownloadFutures').classList.remove('hidden');
                         displayFuturesResults(data.results);
@@ -243,17 +855,31 @@
         }
         
         function displayFuturesResults(results) {
-            let html = '<table><tr><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th></tr>';
-            results.forEach(r => {
+            let html = `<div class="results-wrapper">
+                <div class="results-header">
+                    <span class="results-title">Results</span>
+                    <span class="results-count">${results.length} symbols</span>
+                </div>
+                <div class="table-scroll">
+                <table>
+                <thead><tr>
+                    <th>#</th><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th>
+                </tr></thead><tbody>`;
+            
+            results.forEach((r, index) => {
                 const shortSymbol = r['Symbol'].split('/')[0];
+                const dist = parseFloat(r['Distance %']);
+                const distClass = dist >= 0 ? 'dist-positive' : 'dist-negative';
+                const distSign = dist >= 0 ? '+' : '';
                 html += `<tr>
-                    <td><a href="${r['TradingView Link']}" target="_blank">${shortSymbol}</a></td>
-                    <td>$${r['Price ($)']}</td>
-                    <td>$${r['EMA(50)']}</td>
-                    <td>${r['Distance %']}%</td>
+                    <td>${String(index + 1).padStart(2, '0')}</td>
+                    <td><a href="${r['TradingView Link']}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
+                    <td class="price">$${r['Price ($)']}</td>
+                    <td class="ema">$${r['EMA(50)']}</td>
+                    <td class="${distClass}">${distSign}${r['Distance %']}%</td>
                 </tr>`;
             });
-            html += '</table>';
+            html += '</tbody></table></div></div>';
             document.getElementById('resultsFutures').innerHTML = html;
         }
         
@@ -265,7 +891,7 @@
         function startSpot() {
             document.getElementById('btnSpot').disabled = true;
             document.getElementById('progressSpotContainer').style.display = 'block';
-            document.getElementById('statusSpot').textContent = '⏳ در حال اتصال...';
+            setStatus('statusSpot', 'Connecting...', 'scanning');
             document.getElementById('btnDownloadSpot').classList.add('hidden');
             document.getElementById('resultsSpot').innerHTML = '';
             
@@ -277,7 +903,7 @@
                     }
                 })
                 .catch(err => {
-                    document.getElementById('statusSpot').textContent = '❌ خطا: ' + err;
+                    setStatus('statusSpot', 'Error: ' + err, 'error');
                     document.getElementById('btnSpot').disabled = false;
                 });
         }
@@ -291,20 +917,19 @@
                     const scanned = Math.floor((progress / 100) * total);
                     
                     document.getElementById('progressSpot').style.width = progress + '%';
-                    document.getElementById('progressSpot').textContent = progress + '%';
+                    document.getElementById('progressPercentSpot').textContent = progress + '%';
                     document.getElementById('scannedSpot').textContent = scanned;
                     document.getElementById('foundSpot').textContent = data.results.length;
                     
                     if (data.error) {
-                        document.getElementById('statusSpot').textContent = '❌ خطا: ' + data.error;
+                        setStatus('statusSpot', 'Error: ' + data.error, 'error');
                         clearInterval(spotInterval);
                         document.getElementById('btnSpot').disabled = false;
                     }
                     
                     if (progress === 100 && !data.running) {
                         clearInterval(spotInterval);
-                        document.getElementById('statusSpot').textContent = 
-                            `✅ اسکن کامل شد - ${data.results.length} ارز پیدا شد`;
+                        setStatus('statusSpot', `Scan complete — ${data.results.length} symbols found`, 'success');
                         document.getElementById('btnSpot').disabled = false;
                         document.getElementById('btnDownloadSpot').classList.remove('hidden');
                         displaySpotResults(data.results);
@@ -313,23 +938,45 @@
         }
         
         function displaySpotResults(results) {
-            let html = '<table><tr><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th><th>MCap</th></tr>';
-            results.forEach(r => {
+            let html = `<div class="results-wrapper">
+                <div class="results-header">
+                    <span class="results-title">Results</span>
+                    <span class="results-count">${results.length} symbols</span>
+                </div>
+                <div class="table-scroll">
+                <table>
+                <thead><tr>
+                    <th>#</th><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th><th>MCap</th>
+                </tr></thead><tbody>`;
+            
+            results.forEach((r, index) => {
                 const shortSymbol = r['Symbol'].split('/')[0];
+                const dist = parseFloat(r['Distance %']);
+                const distClass = dist >= 0 ? 'dist-positive' : 'dist-negative';
+                const distSign = dist >= 0 ? '+' : '';
                 html += `<tr>
-                    <td><a href="${r['TradingView Link']}" target="_blank">${shortSymbol}</a></td>
-                    <td>$${r['Price ($)']}</td>
-                    <td>$${r['EMA(50)']}</td>
-                    <td>${r['Distance %']}%</td>
-                    <td>${r['Market Cap'] || 'N/A'}</td>
+                    <td>${String(index + 1).padStart(2, '0')}</td>
+                    <td><a href="${r['TradingView Link']}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
+                    <td class="price">$${r['Price ($)']}</td>
+                    <td class="ema">$${r['EMA(50)']}</td>
+                    <td class="${distClass}">${distSign}${r['Distance %']}%</td>
+                    <td class="mcap">${r['Market Cap'] || '—'}</td>
                 </tr>`;
             });
-            html += '</table>';
+            html += '</tbody></table></div></div>';
             document.getElementById('resultsSpot').innerHTML = html;
         }
         
         function downloadSpot() {
             window.location.href = `${SERVER_URL}/download_spot_pdf`;
+        }
+        
+        // ===== Helpers =====
+        function setStatus(id, text, type) {
+            const el = document.getElementById(id);
+            el.textContent = text;
+            el.className = 'status';
+            if (type) el.classList.add(type);
         }
     </script>
 </body>
