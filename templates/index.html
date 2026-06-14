@@ -5,31 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Mehrzad Scanner</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, sans-serif;
-        }
-        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, sans-serif; }
         body {
             background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
             color: #fff;
             min-height: 100vh;
-            padding: 20px;
+            padding: 15px;
         }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        h1 {
-            text-align: center;
-            margin-bottom: 30px;
-            color: #e94560;
-            font-size: 28px;
-        }
+        .container { max-width: 700px; margin: 0 auto; }
+        h1 { text-align: center; margin-bottom: 10px; color: #e94560; font-size: 24px; }
+        .datetime { text-align: center; color: #aaa; margin-bottom: 20px; font-size: 14px; }
         
         .scanner-section {
             background: rgba(255, 255, 255, 0.05);
@@ -38,12 +23,7 @@
             margin-bottom: 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
-        
-        .section-title {
-            font-size: 20px;
-            margin-bottom: 15px;
-            color: #fff;
-        }
+        .section-title { font-size: 18px; margin-bottom: 15px; color: #fff; }
         
         .btn {
             width: 100%;
@@ -56,32 +36,11 @@
             transition: all 0.3s;
             margin-bottom: 10px;
         }
-        
-        .btn-futures {
-            background: linear-gradient(135deg, #e94560, #c73e54);
-            color: white;
-        }
-        
-        .btn-spot {
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            color: white;
-        }
-        
-        .btn-download {
-            background: linear-gradient(135deg, #0f3460, #1a4f8a);
-            color: white;
-        }
-        
-        .btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
-        
-        .btn:disabled {
-            background: #555;
-            cursor: not-allowed;
-            transform: none;
-        }
+        .btn-futures { background: linear-gradient(135deg, #e94560, #c73e54); color: white; }
+        .btn-spot { background: linear-gradient(135deg, #2ecc71, #27ae60); color: white; }
+        .btn-download { background: linear-gradient(135deg, #0f3460, #1a4f8a); color: white; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.4); }
+        .btn:disabled { background: #555; cursor: not-allowed; transform: none; }
         
         .progress-container {
             background: rgba(0,0,0,0.3);
@@ -90,15 +49,13 @@
             margin: 15px 0;
             display: none;
         }
-        
         .progress-bar {
             width: 100%;
-            height: 30px;
+            height: 25px;
             background: #333;
             border-radius: 15px;
             overflow: hidden;
         }
-        
         .progress-fill {
             height: 100%;
             background: linear-gradient(90deg, #e94560, #f39c12, #2ecc71);
@@ -107,35 +64,50 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 13px;
         }
-        
-        .status {
+        .status { text-align: center; margin: 10px 0; font-size: 14px; color: #aaa; }
+        .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 10px 0; }
+        .stat-box {
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 8px;
             text-align: center;
-            margin: 10px 0;
-            font-size: 16px;
-            color: #aaa;
         }
+        .stat-value { font-size: 20px; font-weight: bold; color: #e94560; }
+        .stat-label { font-size: 11px; color: #aaa; margin-top: 3px; }
         
-        .divider {
-            text-align: center;
-            font-size: 24px;
-            margin: 20px 0;
-            color: #555;
-        }
+        .divider { text-align: center; font-size: 20px; margin: 15px 0; color: #555; }
+        .hidden { display: none; }
         
-        .hidden {
-            display: none;
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            font-size: 11px;
         }
+        th, td { padding: 8px 4px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        th { background: #e94560; font-size: 10px; }
+        tr:hover { background: rgba(255,255,255,0.1); }
+        a { color: #4fc3f7; text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>📊 Mehrzad Scanner</h1>
+        <div class="datetime" id="datetime"></div>
         
         <!-- Futures Section -->
         <div class="scanner-section">
             <div class="section-title">📈 XT Futures Scanner</div>
+            <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">
+                فیلتر ۱ (روزانه): Price > EMA(50)<br>
+                فیلتر ۲ (ساعتی): Price > EMA(50) > EMA(200)
+            </div>
             
             <button class="btn btn-futures" id="btnFutures" onclick="startFutures()">
                 🔍 شروع اسکن Futures
@@ -145,12 +117,24 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressFutures">0%</div>
                 </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="scannedFutures">0</div>
+                        <div class="stat-label">بررسی شده</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="foundFutures">0</div>
+                        <div class="stat-label">پیدا شده</div>
+                    </div>
+                </div>
                 <div class="status" id="statusFutures">آماده</div>
             </div>
             
             <button class="btn btn-download hidden" id="btnDownloadFutures" onclick="downloadFutures()">
                 📥 دانلود PDF Futures
             </button>
+            
+            <div id="resultsFutures"></div>
         </div>
         
         <div class="divider">─────────────────</div>
@@ -158,6 +142,10 @@
         <!-- Spot Section -->
         <div class="scanner-section">
             <div class="section-title">💰 XT Spot Scanner</div>
+            <div style="font-size: 12px; color: #aaa; margin-bottom: 10px;">
+                فیلتر (روزانه): Price > EMA(50)<br>
+                + مارکت کپ از CoinMarketCap
+            </div>
             
             <button class="btn btn-spot" id="btnSpot" onclick="startSpot()">
                 🔍 شروع اسکن Spot
@@ -167,121 +155,177 @@
                 <div class="progress-bar">
                     <div class="progress-fill" id="progressSpot">0%</div>
                 </div>
+                <div class="stats">
+                    <div class="stat-box">
+                        <div class="stat-value" id="scannedSpot">0</div>
+                        <div class="stat-label">بررسی شده</div>
+                    </div>
+                    <div class="stat-box">
+                        <div class="stat-value" id="foundSpot">0</div>
+                        <div class="stat-label">پیدا شده</div>
+                    </div>
+                </div>
                 <div class="status" id="statusSpot">آماده</div>
             </div>
             
             <button class="btn btn-download hidden" id="btnDownloadSpot" onclick="downloadSpot()">
                 📥 دانلود PDF Spot
             </button>
+            
+            <div id="resultsSpot"></div>
         </div>
     </div>
 
     <script>
-        // ⚠️ آدرس سرور خودت رو اینجا بذار!
-        const SERVER_URL = 'https://mehrzad-scanner.onrender.com';
-        
+        const SERVER_URL = window.location.origin;
         let futuresInterval, spotInterval;
         
-        // Futures Functions
+        function updateDateTime() {
+            const now = new Date();
+            document.getElementById('datetime').textContent = 
+                now.toLocaleString('fa-IR', { 
+                    year: 'numeric', month: '2-digit', day: '2-digit',
+                    hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false
+                });
+        }
+        setInterval(updateDateTime, 1000);
+        updateDateTime();
+        
+        // ===== Futures =====
         function startFutures() {
             document.getElementById('btnFutures').disabled = true;
             document.getElementById('progressFuturesContainer').style.display = 'block';
             document.getElementById('statusFutures').textContent = '⏳ در حال اتصال...';
             document.getElementById('btnDownloadFutures').classList.add('hidden');
+            document.getElementById('resultsFutures').innerHTML = '';
             
             fetch(`${SERVER_URL}/start_futures`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'started' || data.status === 'already_running') {
-                        checkFuturesStatus();
+                        futuresInterval = setInterval(checkFuturesStatus, 2000);
                     }
                 })
                 .catch(err => {
-                    console.error('Error:', err);
-                    document.getElementById('statusFutures').textContent = '❌ خطا در اتصال';
+                    document.getElementById('statusFutures').textContent = '❌ خطا: ' + err;
                     document.getElementById('btnFutures').disabled = false;
                 });
         }
         
         function checkFuturesStatus() {
-            futuresInterval = setInterval(() => {
-                fetch(`${SERVER_URL}/futures_status`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const progress = data.progress || 0;
-                        document.getElementById('progressFutures').style.width = progress + '%';
-                        document.getElementById('progressFutures').textContent = progress + '%';
-                        
-                        if (data.error) {
-                            document.getElementById('statusFutures').textContent = '❌ خطا: ' + data.error;
-                            clearInterval(futuresInterval);
-                            document.getElementById('btnFutures').disabled = false;
-                        }
-                        
-                        if (progress === 100 && !data.running) {
-                            clearInterval(futuresInterval);
-                            document.getElementById('statusFutures').textContent = '✅ اسکن کامل شد!';
-                            document.getElementById('btnFutures').disabled = false;
-                            document.getElementById('btnDownloadFutures').classList.remove('hidden');
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error:', err);
-                    });
-            }, 2000);
+            fetch(`${SERVER_URL}/futures_status`)
+                .then(res => res.json())
+                .then(data => {
+                    const progress = data.progress || 0;
+                    const total = data.total || 0;
+                    const scanned = Math.floor((progress / 100) * total);
+                    
+                    document.getElementById('progressFutures').style.width = progress + '%';
+                    document.getElementById('progressFutures').textContent = progress + '%';
+                    document.getElementById('scannedFutures').textContent = scanned;
+                    document.getElementById('foundFutures').textContent = data.results.length;
+                    
+                    if (data.error) {
+                        document.getElementById('statusFutures').textContent = '❌ خطا: ' + data.error;
+                        clearInterval(futuresInterval);
+                        document.getElementById('btnFutures').disabled = false;
+                    }
+                    
+                    if (progress === 100 && !data.running) {
+                        clearInterval(futuresInterval);
+                        document.getElementById('statusFutures').textContent = 
+                            `✅ اسکن کامل شد - ${data.results.length} ارز پیدا شد`;
+                        document.getElementById('btnFutures').disabled = false;
+                        document.getElementById('btnDownloadFutures').classList.remove('hidden');
+                        displayFuturesResults(data.results);
+                    }
+                });
+        }
+        
+        function displayFuturesResults(results) {
+            let html = '<table><tr><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th></tr>';
+            results.forEach(r => {
+                const shortSymbol = r['Symbol'].split('/')[0];
+                html += `<tr>
+                    <td><a href="${r['TradingView Link']}" target="_blank">${shortSymbol}</a></td>
+                    <td>$${r['Price ($)']}</td>
+                    <td>$${r['EMA(50)']}</td>
+                    <td>${r['Distance %']}%</td>
+                </tr>`;
+            });
+            html += '</table>';
+            document.getElementById('resultsFutures').innerHTML = html;
         }
         
         function downloadFutures() {
             window.location.href = `${SERVER_URL}/download_futures_pdf`;
         }
         
-        // Spot Functions
+        // ===== Spot =====
         function startSpot() {
             document.getElementById('btnSpot').disabled = true;
             document.getElementById('progressSpotContainer').style.display = 'block';
             document.getElementById('statusSpot').textContent = '⏳ در حال اتصال...';
             document.getElementById('btnDownloadSpot').classList.add('hidden');
+            document.getElementById('resultsSpot').innerHTML = '';
             
             fetch(`${SERVER_URL}/start_spot`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'started' || data.status === 'already_running') {
-                        checkSpotStatus();
+                        spotInterval = setInterval(checkSpotStatus, 2000);
                     }
                 })
                 .catch(err => {
-                    console.error('Error:', err);
-                    document.getElementById('statusSpot').textContent = '❌ خطا در اتصال';
+                    document.getElementById('statusSpot').textContent = '❌ خطا: ' + err;
                     document.getElementById('btnSpot').disabled = false;
                 });
         }
         
         function checkSpotStatus() {
-            spotInterval = setInterval(() => {
-                fetch(`${SERVER_URL}/spot_status`)
-                    .then(res => res.json())
-                    .then(data => {
-                        const progress = data.progress || 0;
-                        document.getElementById('progressSpot').style.width = progress + '%';
-                        document.getElementById('progressSpot').textContent = progress + '%';
-                        
-                        if (data.error) {
-                            document.getElementById('statusSpot').textContent = '❌ خطا: ' + data.error;
-                            clearInterval(spotInterval);
-                            document.getElementById('btnSpot').disabled = false;
-                        }
-                        
-                        if (progress === 100 && !data.running) {
-                            clearInterval(spotInterval);
-                            document.getElementById('statusSpot').textContent = '✅ اسکن کامل شد!';
-                            document.getElementById('btnSpot').disabled = false;
-                            document.getElementById('btnDownloadSpot').classList.remove('hidden');
-                        }
-                    })
-                    .catch(err => {
-                        console.error('Error:', err);
-                    });
-            }, 2000);
+            fetch(`${SERVER_URL}/spot_status`)
+                .then(res => res.json())
+                .then(data => {
+                    const progress = data.progress || 0;
+                    const total = data.total || 0;
+                    const scanned = Math.floor((progress / 100) * total);
+                    
+                    document.getElementById('progressSpot').style.width = progress + '%';
+                    document.getElementById('progressSpot').textContent = progress + '%';
+                    document.getElementById('scannedSpot').textContent = scanned;
+                    document.getElementById('foundSpot').textContent = data.results.length;
+                    
+                    if (data.error) {
+                        document.getElementById('statusSpot').textContent = '❌ خطا: ' + data.error;
+                        clearInterval(spotInterval);
+                        document.getElementById('btnSpot').disabled = false;
+                    }
+                    
+                    if (progress === 100 && !data.running) {
+                        clearInterval(spotInterval);
+                        document.getElementById('statusSpot').textContent = 
+                            `✅ اسکن کامل شد - ${data.results.length} ارز پیدا شد`;
+                        document.getElementById('btnSpot').disabled = false;
+                        document.getElementById('btnDownloadSpot').classList.remove('hidden');
+                        displaySpotResults(data.results);
+                    }
+                });
+        }
+        
+        function displaySpotResults(results) {
+            let html = '<table><tr><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th><th>MCap</th></tr>';
+            results.forEach(r => {
+                const shortSymbol = r['Symbol'].split('/')[0];
+                html += `<tr>
+                    <td><a href="${r['TradingView Link']}" target="_blank">${shortSymbol}</a></td>
+                    <td>$${r['Price ($)']}</td>
+                    <td>$${r['EMA(50)']}</td>
+                    <td>${r['Distance %']}%</td>
+                    <td>${r['Market Cap'] || 'N/A'}</td>
+                </tr>`;
+            });
+            html += '</table>';
+            document.getElementById('resultsSpot').innerHTML = html;
         }
         
         function downloadSpot() {
