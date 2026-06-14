@@ -133,7 +133,7 @@ def scan_spot():
 
 @app.route('/')
 def index():
-    return "XT Scanner API is running!"
+    return render_template('index.html')
 
 @app.route('/start_futures')
 def start_futures():
