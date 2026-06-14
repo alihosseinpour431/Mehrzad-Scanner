@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, send_file
+from flask import render_template, jsonify, send_file
 import ccxt
 import pandas as pd
 import time
