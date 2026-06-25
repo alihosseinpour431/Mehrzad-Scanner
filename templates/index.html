@@ -12,7 +12,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            /* Trading Terminal Palette */
             --bg-base: #0b0e14;
             --bg-surface: #131722;
             --bg-elevated: #1c2030;
@@ -27,7 +26,6 @@
             --text-muted: #545863;
             --text-disabled: #3d4459;
             
-            /* Trading Colors */
             --bull: #26a69a;
             --bull-bg: rgba(38, 166, 154, 0.1);
             --bear: #ef5350;
@@ -39,6 +37,9 @@
             
             --blue: #2962ff;
             --blue-bg: rgba(41, 98, 255, 0.1);
+
+            --pullback: #ab47bc;
+            --pullback-bg: rgba(171, 71, 188, 0.1);
             
             --mono: 'JetBrains Mono', 'Courier New', monospace;
             --sans: 'Inter', 'Vazirmatn', sans-serif;
@@ -53,10 +54,8 @@
             font-size: 14px;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
-        /* Grid Background Pattern */
         body {
             background-image: 
                 linear-gradient(rgba(37, 42, 61, 0.3) 1px, transparent 1px),
@@ -71,7 +70,7 @@
             padding: 20px;
         }
         
-        /* ===== TOP BAR (Ticker Style) ===== */
+        /* ===== TOP BAR ===== */
         .top-bar {
             display: flex;
             align-items: center;
@@ -217,16 +216,16 @@
             font-size: 14px;
         }
         
-        .icon-futures {
+        .icon-bullish {
             background: var(--bull-bg);
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
         
-        .icon-spot {
-            background: var(--blue-bg);
-            color: var(--blue);
-            border: 1px solid rgba(41, 98, 255, 0.2);
+        .icon-pullback {
+            background: var(--pullback-bg);
+            color: var(--pullback);
+            border: 1px solid rgba(171, 71, 188, 0.2);
         }
         
         .card-badge {
@@ -238,16 +237,16 @@
             letter-spacing: 0.5px;
         }
         
-        .badge-futures {
+        .badge-bullish {
             background: var(--bull-bg);
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
         
-        .badge-spot {
-            background: var(--blue-bg);
-            color: var(--blue);
-            border: 1px solid rgba(41, 98, 255, 0.2);
+        .badge-pullback {
+            background: var(--pullback-bg);
+            color: var(--pullback);
+            border: 1px solid rgba(171, 71, 188, 0.2);
         }
         
         .card-body {
@@ -291,36 +290,24 @@
             letter-spacing: 0.3px;
         }
         
-        .btn-futures {
+        .btn-bullish {
             background: var(--bull);
             color: white;
             border-color: var(--bull);
         }
-        .btn-futures:hover {
+        .btn-bullish:hover:not(:disabled) {
             background: #2bbbad;
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
         
-        .btn-spot {
-            background: var(--blue);
+        .btn-pullback {
+            background: var(--pullback);
             color: white;
-            border-color: var(--blue);
+            border-color: var(--pullback);
         }
-        .btn-spot:hover {
-            background: #3d73ff;
-            box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
-        }
-        
-        .btn-download {
-            background: transparent;
-            color: var(--text-primary);
-            border: 1px solid var(--border-default);
-            margin-top: 10px;
-        }
-        .btn-download:hover {
-            background: var(--bg-elevated);
-            border-color: var(--accent);
-            color: var(--accent);
+        .btn-pullback:hover:not(:disabled) {
+            background: #ba5dc9;
+            box-shadow: 0 4px 12px rgba(171, 71, 188, 0.3);
         }
         
         .btn:active {
@@ -454,28 +441,6 @@
             color: var(--bear);
         }
         
-        /* ===== DIVIDER ===== */
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0;
-            color: var(--text-muted);
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 2px;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-subtle);
-        }
-        
-        .hidden { display: none !important; }
-        
         /* ===== RESULTS TABLE ===== */
         .results-wrapper {
             margin-top: 16px;
@@ -598,19 +563,7 @@
             font-weight: 600;
         }
         
-        .mcap {
-            color: var(--text-secondary);
-            font-size: 11px;
-        }
-        
-        /* Empty state */
-        .empty-state {
-            padding: 30px 20px;
-            text-align: center;
-            color: var(--text-muted);
-            font-family: var(--mono);
-            font-size: 12px;
-        }
+        .hidden { display: none !important; }
         
         /* ===== FOOTER ===== */
         .footer {
@@ -641,21 +594,10 @@
             .top-bar { font-size: 10px; padding: 8px 12px; }
         }
         
-        /* Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: var(--bg-base);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--border-default);
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--border-strong);
-        }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-base); }
+        ::-webkit-scrollbar-thumb { background: var(--border-default); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--border-strong); }
     </style>
 </head>
 <body>
@@ -667,7 +609,7 @@
                 <span class="live-dot"></span>
                 <span>LIVE</span>
             </div>
-            <div>XT EXCHANGE SCANNER</div>
+            <div>XT FUTURES SCANNER</div>
             <div class="datetime" id="datetime">--:--:--</div>
         </div>
         
@@ -677,17 +619,17 @@
                 <div class="logo-icon">XT</div>
                 <h1>XT <span>Scanner</span></h1>
             </div>
-            <div class="subtitle">Technical Analysis Terminal</div>
+            <div class="subtitle">Futures Analysis Terminal</div>
         </div>
         
-        <!-- Futures Card -->
+        <!-- ===== SCANNER 1: Bullish Continuation ===== -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-futures">📈</div>
-                    <span>Futures Scanner</span>
+                    <div class="card-icon icon-bullish">📈</div>
+                    <span>Bullish Continuation</span>
                 </div>
-                <span class="card-badge badge-futures">USDT-M</span>
+                <span class="card-badge badge-bullish">USDT-M</span>
             </div>
             
             <div class="card-body">
@@ -696,104 +638,95 @@
                     <code>H1</code> Price &gt; EMA(50) &gt; EMA(200)
                 </div>
                 
-                <button class="btn btn-futures" id="btnFutures" onclick="startFutures()">
+                <button class="btn btn-bullish" id="btnBullish" onclick="startScan('bullish')">
                     <span>▶</span>
                     <span>START SCAN</span>
                 </button>
                 
-                <div class="progress-container" id="progressFuturesContainer">
+                <div class="progress-container" id="progressBullishContainer">
                     <div class="progress-header">
                         <span class="progress-label">Scanning</span>
-                        <span class="progress-percent" id="progressPercentFutures">0%</span>
+                        <span class="progress-percent" id="progressPercentBullish">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="progressFutures" style="width: 0%"></div>
+                        <div class="progress-fill" id="progressBullish" style="width: 0%"></div>
                     </div>
                     <div class="stats">
                         <div class="stat-box">
                             <span class="stat-label">Scanned</span>
-                            <span class="stat-value" id="scannedFutures">0</span>
+                            <span class="stat-value" id="scannedBullish">0</span>
                         </div>
                         <div class="stat-box">
                             <span class="stat-label">Found</span>
-                            <span class="stat-value accent" id="foundFutures">0</span>
+                            <span class="stat-value accent" id="foundBullish">0</span>
                         </div>
                     </div>
-                    <div class="status" id="statusFutures">Ready</div>
+                    <div class="status" id="statusBullish">Ready</div>
                 </div>
                 
-                <button class="btn btn-download hidden" id="btnDownloadFutures" onclick="downloadFutures()">
-                    <span>⬇</span>
-                    <span>DOWNLOAD PDF</span>
-                </button>
-                
-                <div id="resultsFutures"></div>
+                <div id="resultsBullish"></div>
             </div>
         </div>
         
-        <div class="divider">◆ ◆ ◆</div>
-        
-        <!-- Spot Card -->
+        <!-- ===== SCANNER 2: Pullback Entry ===== -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-spot">💰</div>
-                    <span>Spot Scanner</span>
+                    <div class="card-icon icon-pullback">📉</div>
+                    <span>Pullback Entry</span>
                 </div>
-                <span class="card-badge badge-spot">SPOT</span>
+                <span class="card-badge badge-pullback">USDT-M</span>
             </div>
             
             <div class="card-body">
                 <div class="filter-info">
                     <code>D1</code> Price &gt; EMA(50) &nbsp;·&nbsp; 
-                    <code>CMC</code> Market Cap Filter
+                    <code>H1</code> Price &lt; EMA(50) &nbsp;·&nbsp; 
+                    <code>H1</code> EMA(50) &gt; EMA(200)
                 </div>
                 
-                <button class="btn btn-spot" id="btnSpot" onclick="startSpot()">
+                <button class="btn btn-pullback" id="btnPullback" onclick="startScan('pullback')">
                     <span>▶</span>
                     <span>START SCAN</span>
                 </button>
                 
-                <div class="progress-container" id="progressSpotContainer">
+                <div class="progress-container" id="progressPullbackContainer">
                     <div class="progress-header">
                         <span class="progress-label">Scanning</span>
-                        <span class="progress-percent" id="progressPercentSpot">0%</span>
+                        <span class="progress-percent" id="progressPercentPullback">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="progressSpot" style="width: 0%"></div>
+                        <div class="progress-fill" id="progressPullback" style="width: 0%"></div>
                     </div>
                     <div class="stats">
                         <div class="stat-box">
                             <span class="stat-label">Scanned</span>
-                            <span class="stat-value" id="scannedSpot">0</span>
+                            <span class="stat-value" id="scannedPullback">0</span>
                         </div>
                         <div class="stat-box">
                             <span class="stat-label">Found</span>
-                            <span class="stat-value accent" id="foundSpot">0</span>
+                            <span class="stat-value accent" id="foundPullback">0</span>
                         </div>
                     </div>
-                    <div class="status" id="statusSpot">Ready</div>
+                    <div class="status" id="statusPullback">Ready</div>
                 </div>
                 
-                <button class="btn btn-download hidden" id="btnDownloadSpot" onclick="downloadSpot()">
-                    <span>⬇</span>
-                    <span>DOWNLOAD PDF</span>
-                </button>
-                
-                <div id="resultsSpot"></div>
+                <div id="resultsPullback"></div>
             </div>
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            XT SCANNER <span>v2.0</span> · TERMINAL EDITION · 2026
+            XT SCANNER <span>v2.0</span> · FUTURES EDITION · 2026
         </div>
     </div>
 
     <script>
         const SERVER_URL = window.location.origin;
-        let futuresInterval, spotInterval;
+        const intervals = { bullish: null, pullback: null };
+        let n8nCallbackUrl = null; // اگر از n8n callback خواستی استفاده کنی
         
+        // ===== Date/Time =====
         function updateDateTime() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
@@ -804,57 +737,87 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
         
-        // ===== Futures =====
-        function startFutures() {
-            document.getElementById('btnFutures').disabled = true;
-            document.getElementById('progressFuturesContainer').style.display = 'block';
-            setStatus('statusFutures', 'Connecting...', 'scanning');
-            document.getElementById('btnDownloadFutures').classList.add('hidden');
-            document.getElementById('resultsFutures').innerHTML = '';
+        // ===== Generic Scanner Logic =====
+        function startScan(type) {
+            const cap = type.charAt(0).toUpperCase() + type.slice(1); // Bullish or Pullback
+            const btn = document.getElementById(`btn${cap}`);
+            const progressContainer = document.getElementById(`progress${cap}Container`);
+            const statusId = `status${cap}`;
+            const resultsId = `results${cap}`;
             
-            fetch(`${SERVER_URL}/start_futures`)
+            btn.disabled = true;
+            progressContainer.style.display = 'block';
+            setStatus(statusId, 'Connecting...', 'scanning');
+            document.getElementById(resultsId).innerHTML = '';
+            
+            // endpoint: /start_futures_bullish یا /start_futures_pullback
+            fetch(`${SERVER_URL}/start_futures_${type}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'started' || data.status === 'already_running') {
-                        futuresInterval = setInterval(checkFuturesStatus, 2000);
+                        intervals[type] = setInterval(() => checkStatus(type), 2000);
+                    } else {
+                        setStatus(statusId, 'Unexpected response', 'error');
+                        btn.disabled = false;
                     }
                 })
                 .catch(err => {
-                    setStatus('statusFutures', 'Error: ' + err, 'error');
-                    document.getElementById('btnFutures').disabled = false;
+                    setStatus(statusId, 'Error: ' + err, 'error');
+                    btn.disabled = false;
                 });
         }
         
-        function checkFuturesStatus() {
-            fetch(`${SERVER_URL}/futures_status`)
+        function checkStatus(type) {
+            const cap = type.charAt(0).toUpperCase() + type.slice(1);
+            
+            fetch(`${SERVER_URL}/futures_status_${type}`)
                 .then(res => res.json())
                 .then(data => {
                     const progress = data.progress || 0;
                     const total = data.total || 0;
                     const scanned = Math.floor((progress / 100) * total);
                     
-                    document.getElementById('progressFutures').style.width = progress + '%';
-                    document.getElementById('progressPercentFutures').textContent = progress + '%';
-                    document.getElementById('scannedFutures').textContent = scanned;
-                    document.getElementById('foundFutures').textContent = data.results.length;
+                    document.getElementById(`progress${cap}`).style.width = progress + '%';
+                    document.getElementById(`progressPercent${cap}`).textContent = progress + '%';
+                    document.getElementById(`scanned${cap}`).textContent = scanned;
+                    document.getElementById(`found${cap}`).textContent = (data.results || []).length;
                     
                     if (data.error) {
-                        setStatus('statusFutures', 'Error: ' + data.error, 'error');
-                        clearInterval(futuresInterval);
-                        document.getElementById('btnFutures').disabled = false;
+                        setStatus(`status${cap}`, 'Error: ' + data.error, 'error');
+                        clearInterval(intervals[type]);
+                        document.getElementById(`btn${cap}`).disabled = false;
+                        return;
                     }
                     
                     if (progress === 100 && !data.running) {
-                        clearInterval(futuresInterval);
-                        setStatus('statusFutures', `Scan complete — ${data.results.length} symbols found`, 'success');
-                        document.getElementById('btnFutures').disabled = false;
-                        document.getElementById('btnDownloadFutures').classList.remove('hidden');
-                        displayFuturesResults(data.results);
+                        clearInterval(intervals[type]);
+                        const count = (data.results || []).length;
+                        setStatus(`status${cap}`, `Scan complete — ${count} symbols found`, 'success');
+                        document.getElementById(`btn${cap}`).disabled = false;
+                        displayResults(type, data.results || []);
+                        
+                        // اگر خواستی به n8n بفرستی
+                        if (n8nCallbackUrl) {
+                            sendToN8N(type, data.results);
+                        }
                     }
+                })
+                .catch(err => {
+                    console.error('Status check failed:', err);
                 });
         }
         
-        function displayFuturesResults(results) {
+        function displayResults(type, results) {
+            const cap = type.charAt(0).toUpperCase() + type.slice(1);
+            
+            if (!results || results.length === 0) {
+                document.getElementById(`results${cap}`).innerHTML = 
+                    `<div class="results-wrapper">
+                        <div class="empty-state">No symbols matched the filter criteria.</div>
+                     </div>`;
+                return;
+            }
+            
             let html = `<div class="results-wrapper">
                 <div class="results-header">
                     <span class="results-title">Results</span>
@@ -863,112 +826,56 @@
                 <div class="table-scroll">
                 <table>
                 <thead><tr>
-                    <th>#</th><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th>
+                    <th>#</th>
+                    <th>Symbol</th>
+                    <th>Price</th>
+                    <th>EMA50 (D1)</th>
+                    <th>EMA50 (H1)</th>
+                    <th>EMA200 (H1)</th>
+                    <th>Dist%</th>
                 </tr></thead><tbody>`;
             
             results.forEach((r, index) => {
-                const shortSymbol = r['Symbol'].split('/')[0];
-                const dist = parseFloat(r['Distance %']);
-                const distClass = dist >= 0 ? 'dist-positive' : 'dist-negative';
-                const distSign = dist >= 0 ? '+' : '';
+                const symbol = r['Symbol'] || '';
+                const shortSymbol = symbol.split('/')[0] || symbol;
+                const tradingViewLink = r['TradingView Link'] || '#';
+                const price = r['Price ($)'] || '—';
+                const ema50d = r['EMA(50) D1'] || r['EMA(50)'] || '—';
+                const ema50h = r['EMA(50) H1'] || '—';
+                const ema200h = r['EMA(200) H1'] || '—';
+                const distRaw = r['Distance %'];
+                const dist = parseFloat(distRaw);
+                const distClass = isNaN(dist) ? '' : (dist >= 0 ? 'dist-positive' : 'dist-negative');
+                const distSign = isNaN(dist) ? '' : (dist >= 0 ? '+' : '');
+                const distDisplay = isNaN(dist) ? '—' : `${distSign}${distRaw}%`;
+                
                 html += `<tr>
                     <td>${String(index + 1).padStart(2, '0')}</td>
-                    <td><a href="${r['TradingView Link']}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
-                    <td class="price">$${r['Price ($)']}</td>
-                    <td class="ema">$${r['EMA(50)']}</td>
-                    <td class="${distClass}">${distSign}${r['Distance %']}%</td>
+                    <td><a href="${tradingViewLink}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
+                    <td class="price">$${price}</td>
+                    <td class="ema">$${ema50d}</td>
+                    <td class="ema">$${ema50h}</td>
+                    <td class="ema">$${ema200h}</td>
+                    <td class="${distClass}">${distDisplay}</td>
                 </tr>`;
             });
-            html += '</tbody></table></div></div>';
-            document.getElementById('resultsFutures').innerHTML = html;
-        }
-        
-        function downloadFutures() {
-            window.location.href = `${SERVER_URL}/download_futures_pdf`;
-        }
-        
-        // ===== Spot =====
-        function startSpot() {
-            document.getElementById('btnSpot').disabled = true;
-            document.getElementById('progressSpotContainer').style.display = 'block';
-            setStatus('statusSpot', 'Connecting...', 'scanning');
-            document.getElementById('btnDownloadSpot').classList.add('hidden');
-            document.getElementById('resultsSpot').innerHTML = '';
             
-            fetch(`${SERVER_URL}/start_spot`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data.status === 'started' || data.status === 'already_running') {
-                        spotInterval = setInterval(checkSpotStatus, 2000);
-                    }
+            html += '</tbody></table></div></div>';
+            document.getElementById(`results${cap}`).innerHTML = html;
+        }
+        
+        // ===== Optional: send to n8n =====
+        function sendToN8N(type, results) {
+            fetch(n8nCallbackUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    scanner: type,
+                    count: results.length,
+                    results: results,
+                    timestamp: new Date().toISOString()
                 })
-                .catch(err => {
-                    setStatus('statusSpot', 'Error: ' + err, 'error');
-                    document.getElementById('btnSpot').disabled = false;
-                });
-        }
-        
-        function checkSpotStatus() {
-            fetch(`${SERVER_URL}/spot_status`)
-                .then(res => res.json())
-                .then(data => {
-                    const progress = data.progress || 0;
-                    const total = data.total || 0;
-                    const scanned = Math.floor((progress / 100) * total);
-                    
-                    document.getElementById('progressSpot').style.width = progress + '%';
-                    document.getElementById('progressPercentSpot').textContent = progress + '%';
-                    document.getElementById('scannedSpot').textContent = scanned;
-                    document.getElementById('foundSpot').textContent = data.results.length;
-                    
-                    if (data.error) {
-                        setStatus('statusSpot', 'Error: ' + data.error, 'error');
-                        clearInterval(spotInterval);
-                        document.getElementById('btnSpot').disabled = false;
-                    }
-                    
-                    if (progress === 100 && !data.running) {
-                        clearInterval(spotInterval);
-                        setStatus('statusSpot', `Scan complete — ${data.results.length} symbols found`, 'success');
-                        document.getElementById('btnSpot').disabled = false;
-                        document.getElementById('btnDownloadSpot').classList.remove('hidden');
-                        displaySpotResults(data.results);
-                    }
-                });
-        }
-        
-        function displaySpotResults(results) {
-            let html = `<div class="results-wrapper">
-                <div class="results-header">
-                    <span class="results-title">Results</span>
-                    <span class="results-count">${results.length} symbols</span>
-                </div>
-                <div class="table-scroll">
-                <table>
-                <thead><tr>
-                    <th>#</th><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th><th>MCap</th>
-                </tr></thead><tbody>`;
-            
-            results.forEach((r, index) => {
-                const shortSymbol = r['Symbol'].split('/')[0];
-                const dist = parseFloat(r['Distance %']);
-                const distClass = dist >= 0 ? 'dist-positive' : 'dist-negative';
-                const distSign = dist >= 0 ? '+' : '';
-                html += `<tr>
-                    <td>${String(index + 1).padStart(2, '0')}</td>
-                    <td><a href="${r['TradingView Link']}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
-                    <td class="price">$${r['Price ($)']}</td>
-                    <td class="ema">$${r['EMA(50)']}</td>
-                    <td class="${distClass}">${distSign}${r['Distance %']}%</td>
-                    <td class="mcap">${r['Market Cap'] || '—'}</td>
-                </tr>`;
-            });
-            html += '</tbody></table></div></div>';
-            document.getElementById('resultsSpot').innerHTML = html;
-        }
-        
-        function downloadSpot() {
-            window.location.href = `${SERVER_URL}/download_spot_pdf`;
+            }).catch(err => console.error('n8n send failed:', err));
         }
         
         // ===== Helpers =====
