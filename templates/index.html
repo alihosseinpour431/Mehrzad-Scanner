@@ -37,9 +37,6 @@
             
             --blue: #2962ff;
             --blue-bg: rgba(41, 98, 255, 0.1);
-
-            --pullback: #ab47bc;
-            --pullback-bg: rgba(171, 71, 188, 0.1);
             
             --mono: 'JetBrains Mono', 'Courier New', monospace;
             --sans: 'Inter', 'Vazirmatn', sans-serif;
@@ -54,6 +51,7 @@
             font-size: 14px;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
         
         body {
@@ -216,16 +214,22 @@
             font-size: 14px;
         }
         
-        .icon-bullish {
+        .icon-futures {
             background: var(--bull-bg);
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
         
         .icon-pullback {
-            background: var(--pullback-bg);
-            color: var(--pullback);
-            border: 1px solid rgba(171, 71, 188, 0.2);
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid rgba(41, 98, 255, 0.2);
+        }
+
+        .icon-webhook {
+            background: var(--accent-bg);
+            color: var(--accent);
+            border: 1px solid var(--accent-border);
         }
         
         .card-badge {
@@ -237,16 +241,16 @@
             letter-spacing: 0.5px;
         }
         
-        .badge-bullish {
+        .badge-futures {
             background: var(--bull-bg);
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
         
         .badge-pullback {
-            background: var(--pullback-bg);
-            color: var(--pullback);
-            border: 1px solid rgba(171, 71, 188, 0.2);
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid rgba(41, 98, 255, 0.2);
         }
         
         .card-body {
@@ -265,12 +269,63 @@
             border-radius: 4px;
             margin-bottom: 16px;
             line-height: 1.8;
+            direction: ltr;
+            text-align: left;
         }
         
         .filter-info code {
             color: var(--accent);
             font-weight: 600;
         }
+        
+        /* ===== WEBHOOK INPUT ===== */
+        .webhook-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .webhook-input {
+            flex: 1;
+            padding: 10px 14px;
+            background: var(--bg-base);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            color: var(--text-primary);
+            font-family: var(--mono);
+            font-size: 12px;
+            direction: ltr;
+            text-align: left;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .webhook-input:focus {
+            border-color: var(--accent);
+        }
+
+        .webhook-input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .webhook-hint {
+            margin-top: 8px;
+            font-family: var(--mono);
+            font-size: 10px;
+            color: var(--text-muted);
+            direction: ltr;
+            text-align: left;
+        }
+
+        .webhook-status {
+            margin-top: 6px;
+            font-family: var(--mono);
+            font-size: 10px;
+            direction: ltr;
+            text-align: left;
+        }
+        .webhook-status.ok { color: var(--bull); }
+        .webhook-status.err { color: var(--bear); }
         
         /* ===== BUTTONS ===== */
         .btn {
@@ -290,24 +345,24 @@
             letter-spacing: 0.3px;
         }
         
-        .btn-bullish {
+        .btn-futures {
             background: var(--bull);
             color: white;
             border-color: var(--bull);
         }
-        .btn-bullish:hover:not(:disabled) {
+        .btn-futures:hover {
             background: #2bbbad;
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
         
         .btn-pullback {
-            background: var(--pullback);
+            background: var(--blue);
             color: white;
-            border-color: var(--pullback);
+            border-color: var(--blue);
         }
-        .btn-pullback:hover:not(:disabled) {
-            background: #ba5dc9;
-            box-shadow: 0 4px 12px rgba(171, 71, 188, 0.3);
+        .btn-pullback:hover {
+            background: #3d73ff;
+            box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
         }
         
         .btn:active {
@@ -429,17 +484,31 @@
             letter-spacing: 0.5px;
         }
         
-        .status.scanning {
-            color: var(--accent);
+        .status.scanning { color: var(--accent); }
+        .status.success { color: var(--bull); }
+        .status.error { color: var(--bear); }
+        
+        /* ===== DIVIDER ===== */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 24px 0;
+            color: var(--text-muted);
+            font-family: var(--mono);
+            font-size: 10px;
+            letter-spacing: 2px;
         }
         
-        .status.success {
-            color: var(--bull);
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
         }
         
-        .status.error {
-            color: var(--bear);
-        }
+        .hidden { display: none !important; }
         
         /* ===== RESULTS TABLE ===== */
         .results-wrapper {
@@ -544,26 +613,11 @@
             background: var(--accent-bg);
         }
         
-        .price {
-            color: var(--text-primary);
-            font-weight: 500;
-        }
+        .price { color: var(--text-primary); font-weight: 500; }
+        .ema { color: var(--text-secondary); }
         
-        .ema {
-            color: var(--text-secondary);
-        }
-        
-        .dist-positive {
-            color: var(--bull);
-            font-weight: 600;
-        }
-        
-        .dist-negative {
-            color: var(--bear);
-            font-weight: 600;
-        }
-        
-        .hidden { display: none !important; }
+        .dist-positive { color: var(--bull); font-weight: 600; }
+        .dist-negative { color: var(--bear); font-weight: 600; }
         
         /* ===== FOOTER ===== */
         .footer {
@@ -577,9 +631,7 @@
             margin-top: 20px;
         }
         
-        .footer span {
-            color: var(--accent);
-        }
+        .footer span { color: var(--accent); }
         
         /* ===== RESPONSIVE ===== */
         @media (max-width: 600px) {
@@ -592,6 +644,7 @@
             th, td { padding: 8px 6px; }
             .stat-value { font-size: 16px; }
             .top-bar { font-size: 10px; padding: 8px 12px; }
+            .webhook-row { flex-direction: column; align-items: stretch; }
         }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -609,7 +662,7 @@
                 <span class="live-dot"></span>
                 <span>LIVE</span>
             </div>
-            <div>XT FUTURES SCANNER</div>
+            <div>XT EXCHANGE SCANNER</div>
             <div class="datetime" id="datetime">--:--:--</div>
         </div>
         
@@ -619,17 +672,37 @@
                 <div class="logo-icon">XT</div>
                 <h1>XT <span>Scanner</span></h1>
             </div>
-            <div class="subtitle">Futures Analysis Terminal</div>
+            <div class="subtitle">Futures Strategy Terminal</div>
         </div>
         
-        <!-- ===== SCANNER 1: Bullish Continuation ===== -->
+        <!-- Webhook Configuration -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-bullish">📈</div>
-                    <span>Bullish Continuation</span>
+                    <div class="card-icon icon-webhook">⚙</div>
+                    <span>Webhook / n8n Configuration</span>
                 </div>
-                <span class="card-badge badge-bullish">USDT-M</span>
+            </div>
+            <div class="card-body">
+                <div class="webhook-row">
+                    <input type="text" id="webhookUrl" class="webhook-input" 
+                           placeholder="https://your-n8n.instance/webhook/xxxx-xxxx-xxxx">
+                </div>
+                <div class="webhook-hint">
+                    Results will be POSTed as JSON to this URL after each scan completes.
+                </div>
+                <div class="webhook-status" id="webhookStatus"></div>
+            </div>
+        </div>
+        
+        <!-- Strategy 1: Bullish Trend -->
+        <div class="scanner-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon icon-futures">📈</div>
+                    <span>Strategy 1 · Bullish Trend</span>
+                </div>
+                <span class="card-badge badge-futures">USDT-M</span>
             </div>
             
             <div class="card-body">
@@ -638,44 +711,46 @@
                     <code>H1</code> Price &gt; EMA(50) &gt; EMA(200)
                 </div>
                 
-                <button class="btn btn-bullish" id="btnBullish" onclick="startScan('bullish')">
+                <button class="btn btn-futures" id="btnStrategy1" onclick="startScan('trend')">
                     <span>▶</span>
                     <span>START SCAN</span>
                 </button>
                 
-                <div class="progress-container" id="progressBullishContainer">
+                <div class="progress-container" id="progressTrendContainer">
                     <div class="progress-header">
                         <span class="progress-label">Scanning</span>
-                        <span class="progress-percent" id="progressPercentBullish">0%</span>
+                        <span class="progress-percent" id="progressPercentTrend">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="progressBullish" style="width: 0%"></div>
+                        <div class="progress-fill" id="progressTrend" style="width: 0%"></div>
                     </div>
                     <div class="stats">
                         <div class="stat-box">
                             <span class="stat-label">Scanned</span>
-                            <span class="stat-value" id="scannedBullish">0</span>
+                            <span class="stat-value" id="scannedTrend">0</span>
                         </div>
                         <div class="stat-box">
                             <span class="stat-label">Found</span>
-                            <span class="stat-value accent" id="foundBullish">0</span>
+                            <span class="stat-value accent" id="foundTrend">0</span>
                         </div>
                     </div>
-                    <div class="status" id="statusBullish">Ready</div>
+                    <div class="status" id="statusTrend">Ready</div>
                 </div>
                 
-                <div id="resultsBullish"></div>
+                <div id="resultsTrend"></div>
             </div>
         </div>
         
-        <!-- ===== SCANNER 2: Pullback Entry ===== -->
+        <div class="divider">◆ ◆ ◆</div>
+        
+        <!-- Strategy 2: Pullback Entry -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-pullback">📉</div>
-                    <span>Pullback Entry</span>
+                    <div class="card-icon icon-pullback">🔄</div>
+                    <span>Strategy 2 · Pullback Entry</span>
                 </div>
-                <span class="card-badge badge-pullback">USDT-M</span>
+                <span class="card-badge badge-pullback">PULLBACK</span>
             </div>
             
             <div class="card-body">
@@ -685,7 +760,7 @@
                     <code>H1</code> EMA(50) &gt; EMA(200)
                 </div>
                 
-                <button class="btn btn-pullback" id="btnPullback" onclick="startScan('pullback')">
+                <button class="btn btn-pullback" id="btnStrategy2" onclick="startScan('pullback')">
                     <span>▶</span>
                     <span>START SCAN</span>
                 </button>
@@ -717,16 +792,15 @@
         
         <!-- Footer -->
         <div class="footer">
-            XT SCANNER <span>v2.0</span> · FUTURES EDITION · 2026
+            XT SCANNER <span>v3.0</span> · FUTURES DUAL STRATEGY · 2026
         </div>
     </div>
 
     <script>
         const SERVER_URL = window.location.origin;
-        const intervals = { bullish: null, pullback: null };
-        let n8nCallbackUrl = null; // اگر از n8n callback خواستی استفاده کنی
+        const scanIntervals = {};
         
-        // ===== Date/Time =====
+        // ===== DateTime =====
         function updateDateTime() {
             const now = new Date();
             const h = String(now.getHours()).padStart(2, '0');
@@ -737,84 +811,112 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
         
-        // ===== Generic Scanner Logic =====
-        function startScan(type) {
-            const cap = type.charAt(0).toUpperCase() + type.slice(1); // Bullish or Pullback
-            const btn = document.getElementById(`btn${cap}`);
-            const progressContainer = document.getElementById(`progress${cap}Container`);
-            const statusId = `status${cap}`;
-            const resultsId = `results${cap}`;
+        // ===== Strategy Config =====
+        const STRATEGIES = {
+            trend: {
+                btnId: 'btnStrategy1',
+                progressContainerId: 'progressTrendContainer',
+                progressId: 'progressTrend',
+                percentId: 'progressPercentTrend',
+                scannedId: 'scannedTrend',
+                foundId: 'foundTrend',
+                statusId: 'statusTrend',
+                resultsId: 'resultsTrend',
+                startEndpoint: '/start_futures_trend',
+                statusEndpoint: '/futures_status_trend',
+                name: 'Bullish Trend'
+            },
+            pullback: {
+                btnId: 'btnStrategy2',
+                progressContainerId: 'progressPullbackContainer',
+                progressId: 'progressPullback',
+                percentId: 'progressPercentPullback',
+                scannedId: 'scannedPullback',
+                foundId: 'foundPullback',
+                statusId: 'statusPullback',
+                resultsId: 'resultsPullback',
+                startEndpoint: '/start_futures_pullback',
+                statusEndpoint: '/futures_status_pullback',
+                name: 'Pullback Entry'
+            }
+        };
+        
+        // ===== Start Scan =====
+        function startScan(strategyKey) {
+            const cfg = STRATEGIES[strategyKey];
+            if (!cfg) return;
             
-            btn.disabled = true;
-            progressContainer.style.display = 'block';
-            setStatus(statusId, 'Connecting...', 'scanning');
-            document.getElementById(resultsId).innerHTML = '';
+            document.getElementById(cfg.btnId).disabled = true;
+            document.getElementById(cfg.progressContainerId).style.display = 'block';
+            setStatus(cfg.statusId, 'Connecting...', 'scanning');
+            document.getElementById(cfg.resultsId).innerHTML = '';
             
-            // endpoint: /start_futures_bullish یا /start_futures_pullback
-            fetch(`${SERVER_URL}/start_futures_${type}`)
+            fetch(`${SERVER_URL}${cfg.startEndpoint}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'started' || data.status === 'already_running') {
-                        intervals[type] = setInterval(() => checkStatus(type), 2000);
+                        if (scanIntervals[strategyKey]) clearInterval(scanIntervals[strategyKey]);
+                        scanIntervals[strategyKey] = setInterval(() => checkScanStatus(strategyKey), 2000);
                     } else {
-                        setStatus(statusId, 'Unexpected response', 'error');
-                        btn.disabled = false;
+                        setStatus(cfg.statusId, 'Unexpected response: ' + JSON.stringify(data), 'error');
+                        document.getElementById(cfg.btnId).disabled = false;
                     }
                 })
                 .catch(err => {
-                    setStatus(statusId, 'Error: ' + err, 'error');
-                    btn.disabled = false;
+                    setStatus(cfg.statusId, 'Error: ' + err, 'error');
+                    document.getElementById(cfg.btnId).disabled = false;
                 });
         }
         
-        function checkStatus(type) {
-            const cap = type.charAt(0).toUpperCase() + type.slice(1);
+        // ===== Check Status =====
+        function checkScanStatus(strategyKey) {
+            const cfg = STRATEGIES[strategyKey];
             
-            fetch(`${SERVER_URL}/futures_status_${type}`)
+            fetch(`${SERVER_URL}${cfg.statusEndpoint}`)
                 .then(res => res.json())
                 .then(data => {
                     const progress = data.progress || 0;
                     const total = data.total || 0;
                     const scanned = Math.floor((progress / 100) * total);
                     
-                    document.getElementById(`progress${cap}`).style.width = progress + '%';
-                    document.getElementById(`progressPercent${cap}`).textContent = progress + '%';
-                    document.getElementById(`scanned${cap}`).textContent = scanned;
-                    document.getElementById(`found${cap}`).textContent = (data.results || []).length;
+                    document.getElementById(cfg.progressId).style.width = progress + '%';
+                    document.getElementById(cfg.percentId).textContent = progress + '%';
+                    document.getElementById(cfg.scannedId).textContent = scanned;
+                    document.getElementById(cfg.foundId).textContent = (data.results || []).length;
                     
                     if (data.error) {
-                        setStatus(`status${cap}`, 'Error: ' + data.error, 'error');
-                        clearInterval(intervals[type]);
-                        document.getElementById(`btn${cap}`).disabled = false;
+                        setStatus(cfg.statusId, 'Error: ' + data.error, 'error');
+                        clearInterval(scanIntervals[strategyKey]);
+                        scanIntervals[strategyKey] = null;
+                        document.getElementById(cfg.btnId).disabled = false;
                         return;
                     }
                     
-                    if (progress === 100 && !data.running) {
-                        clearInterval(intervals[type]);
-                        const count = (data.results || []).length;
-                        setStatus(`status${cap}`, `Scan complete — ${count} symbols found`, 'success');
-                        document.getElementById(`btn${cap}`).disabled = false;
-                        displayResults(type, data.results || []);
+                    if (progress >= 100 && !data.running) {
+                        clearInterval(scanIntervals[strategyKey]);
+                        scanIntervals[strategyKey] = null;
+                        const results = data.results || [];
+                        setStatus(cfg.statusId, `Scan complete — ${results.length} symbols found`, 'success');
+                        document.getElementById(cfg.btnId).disabled = false;
+                        displayResults(cfg.resultsId, results);
                         
-                        // اگر خواستی به n8n بفرستی
-                        if (n8nCallbackUrl) {
-                            sendToN8N(type, data.results);
+                        // Send to webhook if configured
+                        const webhookUrl = document.getElementById('webhookUrl').value.trim();
+                        if (webhookUrl) {
+                            sendToWebhook(webhookUrl, strategyKey, cfg.name, results);
                         }
                     }
                 })
                 .catch(err => {
-                    console.error('Status check failed:', err);
+                    setStatus(cfg.statusId, 'Polling error: ' + err, 'error');
                 });
         }
         
-        function displayResults(type, results) {
-            const cap = type.charAt(0).toUpperCase() + type.slice(1);
-            
+        // ===== Display Results =====
+        function displayResults(resultsContainerId, results) {
             if (!results || results.length === 0) {
-                document.getElementById(`results${cap}`).innerHTML = 
-                    `<div class="results-wrapper">
-                        <div class="empty-state">No symbols matched the filter criteria.</div>
-                     </div>`;
+                document.getElementById(resultsContainerId).innerHTML = 
+                    `<div class="results-wrapper"><div class="empty-state">No symbols matched the criteria.</div></div>`;
                 return;
             }
             
@@ -826,61 +928,62 @@
                 <div class="table-scroll">
                 <table>
                 <thead><tr>
-                    <th>#</th>
-                    <th>Symbol</th>
-                    <th>Price</th>
-                    <th>EMA50 (D1)</th>
-                    <th>EMA50 (H1)</th>
-                    <th>EMA200 (H1)</th>
-                    <th>Dist%</th>
+                    <th>#</th><th>Symbol</th><th>Price</th><th>EMA50</th><th>Dist%</th>
                 </tr></thead><tbody>`;
             
             results.forEach((r, index) => {
-                const symbol = r['Symbol'] || '';
-                const shortSymbol = symbol.split('/')[0] || symbol;
-                const tradingViewLink = r['TradingView Link'] || '#';
-                const price = r['Price ($)'] || '—';
-                const ema50d = r['EMA(50) D1'] || r['EMA(50)'] || '—';
-                const ema50h = r['EMA(50) H1'] || '—';
-                const ema200h = r['EMA(200) H1'] || '—';
-                const distRaw = r['Distance %'];
-                const dist = parseFloat(distRaw);
-                const distClass = isNaN(dist) ? '' : (dist >= 0 ? 'dist-positive' : 'dist-negative');
-                const distSign = isNaN(dist) ? '' : (dist >= 0 ? '+' : '');
-                const distDisplay = isNaN(dist) ? '—' : `${distSign}${distRaw}%`;
-                
+                const shortSymbol = (r['Symbol'] || '').split('/')[0];
+                const dist = parseFloat(r['Distance %']) || 0;
+                const distClass = dist >= 0 ? 'dist-positive' : 'dist-negative';
+                const distSign = dist >= 0 ? '+' : '';
+                const link = r['TradingView Link'] || '#';
                 html += `<tr>
                     <td>${String(index + 1).padStart(2, '0')}</td>
-                    <td><a href="${tradingViewLink}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
-                    <td class="price">$${price}</td>
-                    <td class="ema">$${ema50d}</td>
-                    <td class="ema">$${ema50h}</td>
-                    <td class="ema">$${ema200h}</td>
-                    <td class="${distClass}">${distDisplay}</td>
+                    <td><a href="${link}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
+                    <td class="price">$${r['Price ($)'] || '—'}</td>
+                    <td class="ema">$${r['EMA(50)'] || '—'}</td>
+                    <td class="${distClass}">${distSign}${r['Distance %'] || '0'}%</td>
                 </tr>`;
             });
-            
             html += '</tbody></table></div></div>';
-            document.getElementById(`results${cap}`).innerHTML = html;
+            document.getElementById(resultsContainerId).innerHTML = html;
         }
         
-        // ===== Optional: send to n8n =====
-        function sendToN8N(type, results) {
-            fetch(n8nCallbackUrl, {
+        // ===== Webhook =====
+        function sendToWebhook(url, strategyKey, strategyName, results) {
+            const statusEl = document.getElementById('webhookStatus');
+            const payload = {
+                strategy: strategyKey,
+                strategy_name: strategyName,
+                timestamp: new Date().toISOString(),
+                count: results.length,
+                results: results
+            };
+            
+            fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    scanner: type,
-                    count: results.length,
-                    results: results,
-                    timestamp: new Date().toISOString()
-                })
-            }).catch(err => console.error('n8n send failed:', err));
+                body: JSON.stringify(payload)
+            })
+            .then(res => {
+                if (res.ok) {
+                    statusEl.textContent = `✓ Results sent to n8n (${results.length} symbols)`;
+                    statusEl.className = 'webhook-status ok';
+                } else {
+                    throw new Error('HTTP ' + res.status);
+                }
+            })
+            .catch(err => {
+                statusEl.textContent = `✗ Webhook failed: ${err.message}`;
+                statusEl.className = 'webhook-status err';
+                console.error('Webhook error:', err);
+            });
         }
         
         // ===== Helpers =====
         function setStatus(id, text, type) {
             const el = document.getElementById(id);
+            if (!el) return;
             el.textContent = text;
             el.className = 'status';
             if (type) el.classList.add(type);
