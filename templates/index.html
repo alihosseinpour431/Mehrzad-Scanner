@@ -262,7 +262,13 @@
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
         
-        .icon-crossover {
+        .icon-spot-trend {
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid rgba(41, 98, 255, 0.2);
+        }
+        
+        .icon-api {
             background: var(--purple-bg);
             color: var(--purple);
             border: 1px solid rgba(156, 39, 176, 0.2);
@@ -305,12 +311,43 @@
             font-weight: 600;
         }
         
-        .filter-info.crossover {
-            border-right-color: var(--purple);
+        /* ===== API INFO BOX ===== */
+        .api-info {
+            background: var(--purple-bg);
+            border: 1px solid rgba(156, 39, 176, 0.3);
+            border-right: 3px solid var(--purple);
+            border-radius: 4px;
+            padding: 14px 16px;
+            margin-bottom: 16px;
+            font-family: var(--mono);
+            font-size: 11px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            direction: ltr;
+            text-align: left;
         }
         
-        .filter-info.crossover code {
+        .api-info strong {
             color: var(--purple);
+            font-weight: 700;
+        }
+        
+        .api-info code {
+            color: #ce93d8;
+            background: rgba(156, 39, 176, 0.15);
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-size: 10px;
+        }
+        
+        .api-info .api-title {
+            color: var(--purple);
+            font-weight: 700;
+            font-size: 12px;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
         }
         
         /* ===== BUTTONS ===== */
@@ -341,16 +378,6 @@
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
         
-        .btn-crossover {
-            background: var(--purple);
-            color: white;
-            border-color: var(--purple);
-        }
-        .btn-crossover:hover {
-            background: #ab47bc;
-            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
-        }
-        
         .btn-spot-trend {
             background: var(--blue);
             color: white;
@@ -361,16 +388,6 @@
             box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
         }
         
-        .btn-spot-crossover {
-            background: var(--purple);
-            color: white;
-            border-color: var(--purple);
-        }
-        .btn-spot-crossover:hover {
-            background: #ab47bc;
-            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
-        }
-        
         .btn:active { transform: translateY(1px); }
         
         .btn:disabled {
@@ -379,18 +396,6 @@
             border-color: var(--border-subtle);
             cursor: not-allowed;
             box-shadow: none;
-        }
-        
-        .btn-monitoring {
-            background: var(--bg-elevated);
-            color: var(--purple);
-            border: 1px solid var(--purple);
-            animation: borderPulse 2s infinite;
-        }
-        
-        @keyframes borderPulse {
-            0%, 100% { border-color: var(--purple); box-shadow: 0 0 0 rgba(156, 39, 176, 0); }
-            50% { border-color: #ce93d8; box-shadow: 0 0 12px rgba(156, 39, 176, 0.3); }
         }
         
         /* ===== PROGRESS ===== */
@@ -500,7 +505,6 @@
         .status.scanning { color: var(--accent); }
         .status.success { color: var(--bull); }
         .status.error { color: var(--bear); }
-        .status.monitoring { color: var(--purple); }
         
         /* ===== RESULTS TABLE ===== */
         .results-wrapper {
@@ -598,24 +602,6 @@
         
         .dist-positive { color: var(--bull); font-weight: 600; }
         .dist-negative { color: var(--bear); font-weight: 600; }
-        
-        .cross-bullish {
-            color: var(--bull);
-            font-weight: 700;
-            padding: 2px 8px;
-            background: var(--bull-bg);
-            border-radius: 3px;
-            font-size: 10px;
-        }
-        
-        .cross-bearish {
-            color: var(--bear);
-            font-weight: 700;
-            padding: 2px 8px;
-            background: var(--bear-bg);
-            border-radius: 3px;
-            font-size: 10px;
-        }
         
         /* ===== FOOTER ===== */
         .footer {
@@ -723,48 +709,6 @@
             </div>
         </div>
         
-        <!-- Button 2: Futures Crossover -->
-        <div class="scanner-card">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="card-icon icon-crossover">⚡</div>
-                    <span>Futures · 5m EMA Crossover</span>
-                </div>
-                <span class="card-badge">5 MIN</span>
-            </div>
-            <div class="card-body">
-                <div class="filter-info crossover">
-                    <code>5m</code> EMA(50) crosses above EMA(200) &nbsp;·&nbsp; 
-                    <span style="color: var(--purple);">Real-time Monitor</span>
-                </div>
-                <button class="btn btn-crossover" id="btnFuturesCrossover" onclick="startScan('futures_crossover')">
-                    <span>⚡</span>
-                    <span>START MONITORING</span>
-                </button>
-                <div class="progress-container" id="progressFuturesCrossover">
-                    <div class="progress-header">
-                        <span class="progress-label">Checking</span>
-                        <span class="progress-percent" id="percentFuturesCrossover">0%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="barFuturesCrossover" style="width: 0%"></div>
-                    </div>
-                    <div class="stats">
-                        <div class="stat-box">
-                            <span class="stat-label">Checked</span>
-                            <span class="stat-value" id="scannedFuturesCrossover">0</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">Crossovers</span>
-                            <span class="stat-value accent" id="foundFuturesCrossover">0</span>
-                        </div>
-                    </div>
-                    <div class="status" id="statusFuturesCrossover">Ready</div>
-                </div>
-                <div id="resultsFuturesCrossover"></div>
-            </div>
-        </div>
-        
         <!-- ============================================ -->
         <!-- SECTION: SPOT -->
         <!-- ============================================ -->
@@ -774,11 +718,11 @@
             <span class="section-badge badge-spot">SPOT TRADING</span>
         </div>
         
-        <!-- Button 3: Spot Trend -->
+        <!-- Button 2: Spot Trend -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-trend">📈</div>
+                    <div class="card-icon icon-spot-trend">📈</div>
                     <span>Spot · Bullish Trend</span>
                 </div>
                 <span class="card-badge">D1 + H1</span>
@@ -816,51 +760,49 @@
             </div>
         </div>
         
-        <!-- Button 4: Spot Crossover -->
+        <!-- ============================================ -->
+        <!-- SECTION: AUTOMATED CROSSOVER (API) -->
+        <!-- ============================================ -->
+        <div class="section-header">
+            <span class="section-title">⚡ Automated Crossover</span>
+            <div class="section-line"></div>
+            <span class="card-badge" style="background: var(--purple-bg); color: var(--purple); border-color: rgba(156,39,176,0.2);">n8n API</span>
+        </div>
+        
+        <!-- API Info Card -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-crossover">⚡</div>
-                    <span>Spot · 5m EMA Crossover</span>
+                    <div class="card-icon icon-api">🔌</div>
+                    <span>5m EMA Crossover Monitor</span>
                 </div>
-                <span class="card-badge">5 MIN</span>
+                <span class="card-badge">API ONLY</span>
             </div>
             <div class="card-body">
-                <div class="filter-info crossover">
+                <div class="api-info">
+                    <div class="api-title">⚡ AUTOMATED VIA n8n</div>
+                    <div>This scanner runs automatically every 5 minutes via n8n workflow.</div>
+                    <div style="margin-top: 8px;">
+                        <strong>Futures:</strong> <code>POST /api/futures_crossover</code><br>
+                        <strong>Spot:</strong> <code>POST /api/spot_crossover</code>
+                    </div>
+                    <div style="margin-top: 8px; color: var(--text-muted); font-size: 10px;">
+                        Input: List of symbols from Google Sheets → Output: Crossovers detected → AI Alert → Telegram
+                    </div>
+                </div>
+                <div class="filter-info" style="border-right-color: var(--purple);">
                     <code>5m</code> EMA(50) crosses above EMA(200) &nbsp;·&nbsp; 
                     <span style="color: var(--purple);">Real-time Monitor</span>
                 </div>
-                <button class="btn btn-spot-crossover" id="btnSpotCrossover" onclick="startScan('spot_crossover')">
-                    <span>⚡</span>
-                    <span>START MONITORING</span>
-                </button>
-                <div class="progress-container" id="progressSpotCrossover">
-                    <div class="progress-header">
-                        <span class="progress-label">Checking</span>
-                        <span class="progress-percent" id="percentSpotCrossover">0%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="barSpotCrossover" style="width: 0%"></div>
-                    </div>
-                    <div class="stats">
-                        <div class="stat-box">
-                            <span class="stat-label">Checked</span>
-                            <span class="stat-value" id="scannedSpotCrossover">0</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">Crossovers</span>
-                            <span class="stat-value accent" id="foundSpotCrossover">0</span>
-                        </div>
-                    </div>
-                    <div class="status" id="statusSpotCrossover">Ready</div>
+                <div style="text-align: center; padding: 20px; color: var(--text-muted); font-family: var(--mono); font-size: 11px;">
+                    ⚙️ This scanner is automated · No manual button needed
                 </div>
-                <div id="resultsSpotCrossover"></div>
             </div>
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            XT SCANNER <span>v5.0</span> · 4-STRATEGY TERMINAL · 2026
+            XT SCANNER <span>v6.0</span> · HYBRID TERMINAL · 2026
         </div>
     </div>
 
@@ -879,8 +821,7 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
         
-        // ===== Strategy Config =====
-        // NOTE: Backend endpoints should be implemented in app.py
+        // ===== Strategy Config (Only 2 manual strategies) =====
         const STRATEGIES = {
             futures_trend: {
                 btnId: 'btnFuturesTrend',
@@ -892,21 +833,7 @@
                 statusId: 'statusFuturesTrend',
                 resultsId: 'resultsFuturesTrend',
                 startEndpoint: '/start_futures_trend',
-                statusEndpoint: '/futures_status_trend',
-                type: 'trend'
-            },
-            futures_crossover: {
-                btnId: 'btnFuturesCrossover',
-                progressId: 'progressFuturesCrossover',
-                barId: 'barFuturesCrossover',
-                percentId: 'percentFuturesCrossover',
-                scannedId: 'scannedFuturesCrossover',
-                foundId: 'foundFuturesCrossover',
-                statusId: 'statusFuturesCrossover',
-                resultsId: 'resultsFuturesCrossover',
-                startEndpoint: '/start_futures_crossover',
-                statusEndpoint: '/futures_status_crossover',
-                type: 'crossover'
+                statusEndpoint: '/futures_status_trend'
             },
             spot_trend: {
                 btnId: 'btnSpotTrend',
@@ -918,21 +845,7 @@
                 statusId: 'statusSpotTrend',
                 resultsId: 'resultsSpotTrend',
                 startEndpoint: '/start_spot_trend',
-                statusEndpoint: '/spot_status_trend',
-                type: 'trend'
-            },
-            spot_crossover: {
-                btnId: 'btnSpotCrossover',
-                progressId: 'progressSpotCrossover',
-                barId: 'barSpotCrossover',
-                percentId: 'percentSpotCrossover',
-                scannedId: 'scannedSpotCrossover',
-                foundId: 'foundSpotCrossover',
-                statusId: 'statusSpotCrossover',
-                resultsId: 'resultsSpotCrossover',
-                startEndpoint: '/start_spot_crossover',
-                statusEndpoint: '/spot_status_crossover',
-                type: 'crossover'
+                statusEndpoint: '/spot_status_trend'
             }
         };
         
@@ -992,16 +905,9 @@
                         clearInterval(scanIntervals[strategyKey]);
                         scanIntervals[strategyKey] = null;
                         const results = data.results || [];
-                        
-                        if (cfg.type === 'crossover') {
-                            setStatus(`✓ Scan complete — ${results.length} crossovers detected`, 'success');
-                            document.getElementById(cfg.btnId).disabled = false;
-                            displayCrossoverResults(cfg.resultsId, results);
-                        } else {
-                            setStatus(`✓ Scan complete — ${results.length} symbols found`, 'success');
-                            document.getElementById(cfg.btnId).disabled = false;
-                            displayTrendResults(cfg.resultsId, results);
-                        }
+                        setStatus(`✓ Scan complete — ${results.length} symbols found`, 'success');
+                        document.getElementById(cfg.btnId).disabled = false;
+                        displayTrendResults(cfg.resultsId, results);
                     }
                 })
                 .catch(err => {
@@ -1040,44 +946,6 @@
                     <td class="price">$${r['Price ($)'] || '—'}</td>
                     <td class="ema">$${r['EMA(50)'] || '—'}</td>
                     <td class="${distClass}">${distSign}${r['Distance %'] || '0'}%</td>
-                </tr>`;
-            });
-            html += '</tbody></table></div></div>';
-            document.getElementById(resultsContainerId).innerHTML = html;
-        }
-        
-        // ===== Display Crossover Results =====
-        function displayCrossoverResults(resultsContainerId, results) {
-            if (!results || results.length === 0) {
-                document.getElementById(resultsContainerId).innerHTML = 
-                    `<div class="results-wrapper"><div class="status" style="padding:20px;">No crossovers detected in this scan.</div></div>`;
-                return;
-            }
-            
-            let html = `<div class="results-wrapper">
-                <div class="results-header">
-                    <span class="results-title">Crossovers Detected</span>
-                    <span class="results-count">${results.length} signals</span>
-                </div>
-                <div class="table-scroll">
-                <table>
-                <thead><tr>
-                    <th>#</th><th>Symbol</th><th>Type</th><th>Price</th><th>EMA50</th><th>EMA200</th>
-                </tr></thead><tbody>`;
-            
-            results.forEach((r, index) => {
-                const shortSymbol = (r.symbol || '').split('/')[0];
-                const crossType = r.cross_type || 'BULLISH';
-                const crossClass = crossType === 'BULLISH' ? 'cross-bullish' : 'cross-bearish';
-                const crossLabel = crossType === 'BULLISH' ? '▲ BULL' : '▼ BEAR';
-                const link = r.tradingview_link || '#';
-                html += `<tr>
-                    <td>${String(index + 1).padStart(2, '0')}</td>
-                    <td><a href="${link}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
-                    <td><span class="${crossClass}">${crossLabel}</span></td>
-                    <td class="price">$${r.price || '—'}</td>
-                    <td class="ema">$${r.ema50 || '—'}</td>
-                    <td class="ema">$${r.ema200 || '—'}</td>
                 </tr>`;
             });
             html += '</tbody></table></div></div>';
