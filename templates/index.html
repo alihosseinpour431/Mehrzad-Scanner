@@ -38,6 +38,9 @@
             --blue: #2962ff;
             --blue-bg: rgba(41, 98, 255, 0.1);
             
+            --purple: #9c27b0;
+            --purple-bg: rgba(156, 39, 176, 0.1);
+            
             --mono: 'JetBrains Mono', 'Courier New', monospace;
             --sans: 'Inter', 'Vazirmatn', sans-serif;
             --fa: 'Vazirmatn', sans-serif;
@@ -51,7 +54,6 @@
             font-size: 14px;
             line-height: 1.5;
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
         }
         
         body {
@@ -59,7 +61,6 @@
                 linear-gradient(rgba(37, 42, 61, 0.3) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(37, 42, 61, 0.3) 1px, transparent 1px);
             background-size: 40px 40px;
-            background-position: center center;
         }
         
         .container {
@@ -125,8 +126,7 @@
         /* ===== HEADER ===== */
         .header {
             text-align: center;
-            padding: 30px 0 40px;
-            position: relative;
+            padding: 30px 0 20px;
         }
         
         .logo-mark {
@@ -156,12 +156,9 @@
             font-weight: 800;
             color: var(--text-primary);
             letter-spacing: -0.5px;
-            font-family: var(--sans);
         }
         
-        h1 span {
-            color: var(--accent);
-        }
+        h1 span { color: var(--accent); }
         
         .subtitle {
             font-size: 12px;
@@ -172,12 +169,57 @@
             margin-top: 4px;
         }
         
+        /* ===== SECTION HEADER ===== */
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin: 30px 0 16px;
+            padding: 0 4px;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-primary);
+            font-family: var(--mono);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        
+        .section-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border-subtle);
+        }
+        
+        .section-badge {
+            font-family: var(--mono);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+        
+        .badge-futures {
+            background: var(--bull-bg);
+            color: var(--bull);
+            border: 1px solid rgba(38, 166, 154, 0.2);
+        }
+        
+        .badge-spot {
+            background: var(--blue-bg);
+            color: var(--blue);
+            border: 1px solid rgba(41, 98, 255, 0.2);
+        }
+        
         /* ===== SCANNER CARD ===== */
         .scanner-card {
             background: var(--bg-surface);
             border: 1px solid var(--border-subtle);
             border-radius: 8px;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
             overflow: hidden;
             transition: border-color 0.2s;
         }
@@ -214,16 +256,16 @@
             font-size: 14px;
         }
         
-        .icon-futures {
+        .icon-trend {
             background: var(--bull-bg);
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
-
-        .icon-webhook {
-            background: var(--accent-bg);
-            color: var(--accent);
-            border: 1px solid var(--accent-border);
+        
+        .icon-crossover {
+            background: var(--purple-bg);
+            color: var(--purple);
+            border: 1px solid rgba(156, 39, 176, 0.2);
         }
         
         .card-badge {
@@ -233,12 +275,9 @@
             padding: 4px 8px;
             border-radius: 4px;
             letter-spacing: 0.5px;
-        }
-        
-        .badge-futures {
-            background: var(--bull-bg);
-            color: var(--bull);
-            border: 1px solid rgba(38, 166, 154, 0.2);
+            background: var(--bg-base);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
         }
         
         .card-body {
@@ -266,54 +305,13 @@
             font-weight: 600;
         }
         
-        /* ===== WEBHOOK INPUT ===== */
-        .webhook-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
+        .filter-info.crossover {
+            border-right-color: var(--purple);
         }
-
-        .webhook-input {
-            flex: 1;
-            padding: 10px 14px;
-            background: var(--bg-base);
-            border: 1px solid var(--border-subtle);
-            border-radius: 6px;
-            color: var(--text-primary);
-            font-family: var(--mono);
-            font-size: 12px;
-            direction: ltr;
-            text-align: left;
-            outline: none;
-            transition: border-color 0.2s;
+        
+        .filter-info.crossover code {
+            color: var(--purple);
         }
-
-        .webhook-input:focus {
-            border-color: var(--accent);
-        }
-
-        .webhook-input::placeholder {
-            color: var(--text-muted);
-        }
-
-        .webhook-hint {
-            margin-top: 8px;
-            font-family: var(--mono);
-            font-size: 10px;
-            color: var(--text-muted);
-            direction: ltr;
-            text-align: left;
-        }
-
-        .webhook-status {
-            margin-top: 6px;
-            font-family: var(--mono);
-            font-size: 10px;
-            direction: ltr;
-            text-align: left;
-        }
-        .webhook-status.ok { color: var(--bull); }
-        .webhook-status.err { color: var(--bear); }
         
         /* ===== BUTTONS ===== */
         .btn {
@@ -333,19 +331,47 @@
             letter-spacing: 0.3px;
         }
         
-        .btn-futures {
+        .btn-trend {
             background: var(--bull);
             color: white;
             border-color: var(--bull);
         }
-        .btn-futures:hover {
+        .btn-trend:hover {
             background: #2bbbad;
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
         }
         
-        .btn:active {
-            transform: translateY(1px);
+        .btn-crossover {
+            background: var(--purple);
+            color: white;
+            border-color: var(--purple);
         }
+        .btn-crossover:hover {
+            background: #ab47bc;
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+        }
+        
+        .btn-spot-trend {
+            background: var(--blue);
+            color: white;
+            border-color: var(--blue);
+        }
+        .btn-spot-trend:hover {
+            background: #3d73ff;
+            box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
+        }
+        
+        .btn-spot-crossover {
+            background: var(--purple);
+            color: white;
+            border-color: var(--purple);
+        }
+        .btn-spot-crossover:hover {
+            background: #ab47bc;
+            box-shadow: 0 4px 12px rgba(156, 39, 176, 0.3);
+        }
+        
+        .btn:active { transform: translateY(1px); }
         
         .btn:disabled {
             background: var(--bg-elevated);
@@ -353,6 +379,18 @@
             border-color: var(--border-subtle);
             cursor: not-allowed;
             box-shadow: none;
+        }
+        
+        .btn-monitoring {
+            background: var(--bg-elevated);
+            color: var(--purple);
+            border: 1px solid var(--purple);
+            animation: borderPulse 2s infinite;
+        }
+        
+        @keyframes borderPulse {
+            0%, 100% { border-color: var(--purple); box-shadow: 0 0 0 rgba(156, 39, 176, 0); }
+            50% { border-color: #ce93d8; box-shadow: 0 0 12px rgba(156, 39, 176, 0.3); }
         }
         
         /* ===== PROGRESS ===== */
@@ -391,7 +429,6 @@
             background: var(--bg-elevated);
             border-radius: 2px;
             overflow: hidden;
-            position: relative;
         }
         
         .progress-fill {
@@ -449,9 +486,7 @@
             color: var(--text-primary);
         }
         
-        .stat-value.accent {
-            color: var(--accent);
-        }
+        .stat-value.accent { color: var(--accent); }
         
         .status {
             text-align: center;
@@ -465,8 +500,7 @@
         .status.scanning { color: var(--accent); }
         .status.success { color: var(--bull); }
         .status.error { color: var(--bear); }
-        
-        .hidden { display: none !important; }
+        .status.monitoring { color: var(--purple); }
         
         /* ===== RESULTS TABLE ===== */
         .results-wrapper {
@@ -498,9 +532,7 @@
             font-weight: 600;
         }
         
-        .table-scroll {
-            overflow-x: auto;
-        }
+        .table-scroll { overflow-x: auto; }
         
         table {
             width: 100%;
@@ -509,9 +541,7 @@
             font-size: 12px;
         }
         
-        thead {
-            background: var(--bg-base);
-        }
+        thead { background: var(--bg-base); }
         
         th {
             padding: 10px 8px;
@@ -545,17 +575,9 @@
             font-weight: 500;
         }
         
-        tbody tr {
-            transition: background 0.15s;
-        }
-        
-        tbody tr:hover {
-            background: var(--bg-elevated);
-        }
-        
-        tbody tr:last-child td {
-            border-bottom: none;
-        }
+        tbody tr { transition: background 0.15s; }
+        tbody tr:hover { background: var(--bg-elevated); }
+        tbody tr:last-child td { border-bottom: none; }
         
         .symbol-link {
             color: var(--text-primary);
@@ -576,6 +598,24 @@
         
         .dist-positive { color: var(--bull); font-weight: 600; }
         .dist-negative { color: var(--bear); font-weight: 600; }
+        
+        .cross-bullish {
+            color: var(--bull);
+            font-weight: 700;
+            padding: 2px 8px;
+            background: var(--bull-bg);
+            border-radius: 3px;
+            font-size: 10px;
+        }
+        
+        .cross-bearish {
+            color: var(--bear);
+            font-weight: 700;
+            padding: 2px 8px;
+            background: var(--bear-bg);
+            border-radius: 3px;
+            font-size: 10px;
+        }
         
         /* ===== FOOTER ===== */
         .footer {
@@ -602,7 +642,6 @@
             th, td { padding: 8px 6px; }
             .stat-value { font-size: 16px; }
             .top-bar { font-size: 10px; padding: 8px 12px; }
-            .webhook-row { flex-direction: column; align-items: stretch; }
         }
         
         ::-webkit-scrollbar { width: 6px; height: 6px; }
@@ -630,84 +669,204 @@
                 <div class="logo-icon">XT</div>
                 <h1>XT <span>Scanner</span></h1>
             </div>
-            <div class="subtitle">Futures Strategy Terminal</div>
+            <div class="subtitle">Multi-Strategy Trading Terminal</div>
         </div>
         
-        <!-- Webhook Configuration -->
+        <!-- ============================================ -->
+        <!-- SECTION: FUTURES -->
+        <!-- ============================================ -->
+        <div class="section-header">
+            <span class="section-title">⚡ Futures</span>
+            <div class="section-line"></div>
+            <span class="section-badge badge-futures">USDT-M PERP</span>
+        </div>
+        
+        <!-- Button 1: Futures Trend -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
-                    <div class="card-icon icon-webhook">⚙</div>
-                    <span>Webhook / n8n Configuration</span>
+                    <div class="card-icon icon-trend">📈</div>
+                    <span>Futures · Bullish Trend</span>
                 </div>
+                <span class="card-badge">D1 + H1</span>
             </div>
-            <div class="card-body">
-                <div class="webhook-row">
-                    <input type="text" id="webhookUrl" class="webhook-input" 
-                           placeholder="https://your-n8n.instance/webhook/xxxx-xxxx-xxxx">
-                </div>
-                <div class="webhook-hint">
-                    Results will be POSTed as JSON to this URL after scan completes.
-                </div>
-                <div class="webhook-status" id="webhookStatus"></div>
-            </div>
-        </div>
-        
-        <!-- Strategy: Bullish Trend -->
-        <div class="scanner-card">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="card-icon icon-futures">📈</div>
-                    <span>Bullish Trend Scanner</span>
-                </div>
-                <span class="card-badge badge-futures">USDT-M</span>
-            </div>
-            
             <div class="card-body">
                 <div class="filter-info">
                     <code>D1</code> Price &gt; EMA(50) &nbsp;·&nbsp; 
                     <code>H1</code> Price &gt; EMA(50) &gt; EMA(200)
                 </div>
-                
-                <button class="btn btn-futures" id="btnStrategy1" onclick="startScan()">
+                <button class="btn btn-trend" id="btnFuturesTrend" onclick="startScan('futures_trend')">
                     <span>▶</span>
                     <span>START SCAN</span>
                 </button>
-                
-                <div class="progress-container" id="progressContainer">
+                <div class="progress-container" id="progressFuturesTrend">
                     <div class="progress-header">
                         <span class="progress-label">Scanning</span>
-                        <span class="progress-percent" id="progressPercent">0%</span>
+                        <span class="progress-percent" id="percentFuturesTrend">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+                        <div class="progress-fill" id="barFuturesTrend" style="width: 0%"></div>
                     </div>
                     <div class="stats">
                         <div class="stat-box">
                             <span class="stat-label">Scanned</span>
-                            <span class="stat-value" id="scannedCount">0</span>
+                            <span class="stat-value" id="scannedFuturesTrend">0</span>
                         </div>
                         <div class="stat-box">
                             <span class="stat-label">Found</span>
-                            <span class="stat-value accent" id="foundCount">0</span>
+                            <span class="stat-value accent" id="foundFuturesTrend">0</span>
                         </div>
                     </div>
-                    <div class="status" id="statusText">Ready</div>
+                    <div class="status" id="statusFuturesTrend">Ready</div>
                 </div>
-                
-                <div id="resultsContainer"></div>
+                <div id="resultsFuturesTrend"></div>
+            </div>
+        </div>
+        
+        <!-- Button 2: Futures Crossover -->
+        <div class="scanner-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon icon-crossover">⚡</div>
+                    <span>Futures · 5m EMA Crossover</span>
+                </div>
+                <span class="card-badge">5 MIN</span>
+            </div>
+            <div class="card-body">
+                <div class="filter-info crossover">
+                    <code>5m</code> EMA(50) crosses above EMA(200) &nbsp;·&nbsp; 
+                    <span style="color: var(--purple);">Real-time Monitor</span>
+                </div>
+                <button class="btn btn-crossover" id="btnFuturesCrossover" onclick="startScan('futures_crossover')">
+                    <span>⚡</span>
+                    <span>START MONITORING</span>
+                </button>
+                <div class="progress-container" id="progressFuturesCrossover">
+                    <div class="progress-header">
+                        <span class="progress-label">Checking</span>
+                        <span class="progress-percent" id="percentFuturesCrossover">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="barFuturesCrossover" style="width: 0%"></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Checked</span>
+                            <span class="stat-value" id="scannedFuturesCrossover">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Crossovers</span>
+                            <span class="stat-value accent" id="foundFuturesCrossover">0</span>
+                        </div>
+                    </div>
+                    <div class="status" id="statusFuturesCrossover">Ready</div>
+                </div>
+                <div id="resultsFuturesCrossover"></div>
+            </div>
+        </div>
+        
+        <!-- ============================================ -->
+        <!-- SECTION: SPOT -->
+        <!-- ============================================ -->
+        <div class="section-header">
+            <span class="section-title">💰 Spot</span>
+            <div class="section-line"></div>
+            <span class="section-badge badge-spot">SPOT TRADING</span>
+        </div>
+        
+        <!-- Button 3: Spot Trend -->
+        <div class="scanner-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon icon-trend">📈</div>
+                    <span>Spot · Bullish Trend</span>
+                </div>
+                <span class="card-badge">D1 + H1</span>
+            </div>
+            <div class="card-body">
+                <div class="filter-info">
+                    <code>D1</code> Price &gt; EMA(50) &nbsp;·&nbsp; 
+                    <code>H1</code> Price &gt; EMA(50) &gt; EMA(200)
+                </div>
+                <button class="btn btn-spot-trend" id="btnSpotTrend" onclick="startScan('spot_trend')">
+                    <span>▶</span>
+                    <span>START SCAN</span>
+                </button>
+                <div class="progress-container" id="progressSpotTrend">
+                    <div class="progress-header">
+                        <span class="progress-label">Scanning</span>
+                        <span class="progress-percent" id="percentSpotTrend">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="barSpotTrend" style="width: 0%"></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Scanned</span>
+                            <span class="stat-value" id="scannedSpotTrend">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Found</span>
+                            <span class="stat-value accent" id="foundSpotTrend">0</span>
+                        </div>
+                    </div>
+                    <div class="status" id="statusSpotTrend">Ready</div>
+                </div>
+                <div id="resultsSpotTrend"></div>
+            </div>
+        </div>
+        
+        <!-- Button 4: Spot Crossover -->
+        <div class="scanner-card">
+            <div class="card-header">
+                <div class="card-title">
+                    <div class="card-icon icon-crossover">⚡</div>
+                    <span>Spot · 5m EMA Crossover</span>
+                </div>
+                <span class="card-badge">5 MIN</span>
+            </div>
+            <div class="card-body">
+                <div class="filter-info crossover">
+                    <code>5m</code> EMA(50) crosses above EMA(200) &nbsp;·&nbsp; 
+                    <span style="color: var(--purple);">Real-time Monitor</span>
+                </div>
+                <button class="btn btn-spot-crossover" id="btnSpotCrossover" onclick="startScan('spot_crossover')">
+                    <span>⚡</span>
+                    <span>START MONITORING</span>
+                </button>
+                <div class="progress-container" id="progressSpotCrossover">
+                    <div class="progress-header">
+                        <span class="progress-label">Checking</span>
+                        <span class="progress-percent" id="percentSpotCrossover">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="barSpotCrossover" style="width: 0%"></div>
+                    </div>
+                    <div class="stats">
+                        <div class="stat-box">
+                            <span class="stat-label">Checked</span>
+                            <span class="stat-value" id="scannedSpotCrossover">0</span>
+                        </div>
+                        <div class="stat-box">
+                            <span class="stat-label">Crossovers</span>
+                            <span class="stat-value accent" id="foundSpotCrossover">0</span>
+                        </div>
+                    </div>
+                    <div class="status" id="statusSpotCrossover">Ready</div>
+                </div>
+                <div id="resultsSpotCrossover"></div>
             </div>
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            XT SCANNER <span>v4.0</span> · BULLISH TREND · 2026
+            XT SCANNER <span>v5.0</span> · 4-STRATEGY TERMINAL · 2026
         </div>
     </div>
 
     <script>
         const SERVER_URL = window.location.origin;
-        let scanInterval = null;
+        const scanIntervals = {};
         
         // ===== DateTime =====
         function updateDateTime() {
@@ -720,77 +879,141 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
         
+        // ===== Strategy Config =====
+        // NOTE: Backend endpoints should be implemented in app.py
+        const STRATEGIES = {
+            futures_trend: {
+                btnId: 'btnFuturesTrend',
+                progressId: 'progressFuturesTrend',
+                barId: 'barFuturesTrend',
+                percentId: 'percentFuturesTrend',
+                scannedId: 'scannedFuturesTrend',
+                foundId: 'foundFuturesTrend',
+                statusId: 'statusFuturesTrend',
+                resultsId: 'resultsFuturesTrend',
+                startEndpoint: '/start_futures_trend',
+                statusEndpoint: '/futures_status_trend',
+                type: 'trend'
+            },
+            futures_crossover: {
+                btnId: 'btnFuturesCrossover',
+                progressId: 'progressFuturesCrossover',
+                barId: 'barFuturesCrossover',
+                percentId: 'percentFuturesCrossover',
+                scannedId: 'scannedFuturesCrossover',
+                foundId: 'foundFuturesCrossover',
+                statusId: 'statusFuturesCrossover',
+                resultsId: 'resultsFuturesCrossover',
+                startEndpoint: '/start_futures_crossover',
+                statusEndpoint: '/futures_status_crossover',
+                type: 'crossover'
+            },
+            spot_trend: {
+                btnId: 'btnSpotTrend',
+                progressId: 'progressSpotTrend',
+                barId: 'barSpotTrend',
+                percentId: 'percentSpotTrend',
+                scannedId: 'scannedSpotTrend',
+                foundId: 'foundSpotTrend',
+                statusId: 'statusSpotTrend',
+                resultsId: 'resultsSpotTrend',
+                startEndpoint: '/start_spot_trend',
+                statusEndpoint: '/spot_status_trend',
+                type: 'trend'
+            },
+            spot_crossover: {
+                btnId: 'btnSpotCrossover',
+                progressId: 'progressSpotCrossover',
+                barId: 'barSpotCrossover',
+                percentId: 'percentSpotCrossover',
+                scannedId: 'scannedSpotCrossover',
+                foundId: 'foundSpotCrossover',
+                statusId: 'statusSpotCrossover',
+                resultsId: 'resultsSpotCrossover',
+                startEndpoint: '/start_spot_crossover',
+                statusEndpoint: '/spot_status_crossover',
+                type: 'crossover'
+            }
+        };
+        
         // ===== Start Scan =====
-        function startScan() {
-            document.getElementById('btnStrategy1').disabled = true;
-            document.getElementById('progressContainer').style.display = 'block';
-            setStatus('Connecting...', 'scanning');
-            document.getElementById('resultsContainer').innerHTML = '';
+        function startScan(strategyKey) {
+            const cfg = STRATEGIES[strategyKey];
+            if (!cfg) return;
             
-            fetch(`${SERVER_URL}/start_futures_trend`)
+            const btn = document.getElementById(cfg.btnId);
+            btn.disabled = true;
+            document.getElementById(cfg.progressId).style.display = 'block';
+            setStatus(cfg.statusId, 'Connecting...', 'scanning');
+            document.getElementById(cfg.resultsId).innerHTML = '';
+            
+            fetch(`${SERVER_URL}${cfg.startEndpoint}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'started' || data.status === 'already_running') {
-                        if (scanInterval) clearInterval(scanInterval);
-                        scanInterval = setInterval(checkScanStatus, 2000);
+                        if (scanIntervals[strategyKey]) clearInterval(scanIntervals[strategyKey]);
+                        scanIntervals[strategyKey] = setInterval(() => checkScanStatus(strategyKey), 2000);
                     } else {
-                        setStatus('Unexpected response: ' + JSON.stringify(data), 'error');
-                        document.getElementById('btnStrategy1').disabled = false;
+                        setStatus(cfg.statusId, 'Unexpected: ' + JSON.stringify(data), 'error');
+                        btn.disabled = false;
                     }
                 })
                 .catch(err => {
-                    setStatus('Error: ' + err, 'error');
-                    document.getElementById('btnStrategy1').disabled = false;
+                    setStatus(cfg.statusId, 'Error: ' + err, 'error');
+                    btn.disabled = false;
                 });
         }
         
         // ===== Check Status =====
-        function checkScanStatus() {
-            fetch(`${SERVER_URL}/futures_status_trend`)
+        function checkScanStatus(strategyKey) {
+            const cfg = STRATEGIES[strategyKey];
+            
+            fetch(`${SERVER_URL}${cfg.statusEndpoint}`)
                 .then(res => res.json())
                 .then(data => {
                     const progress = data.progress || 0;
                     const total = data.total || 0;
                     const scanned = Math.floor((progress / 100) * total);
                     
-                    document.getElementById('progressBar').style.width = progress + '%';
-                    document.getElementById('progressPercent').textContent = progress + '%';
-                    document.getElementById('scannedCount').textContent = scanned;
-                    document.getElementById('foundCount').textContent = (data.results || []).length;
+                    document.getElementById(cfg.barId).style.width = progress + '%';
+                    document.getElementById(cfg.percentId).textContent = progress + '%';
+                    document.getElementById(cfg.scannedId).textContent = scanned;
+                    document.getElementById(cfg.foundId).textContent = (data.results || []).length;
                     
                     if (data.error) {
-                        setStatus('Error: ' + data.error, 'error');
-                        clearInterval(scanInterval);
-                        scanInterval = null;
-                        document.getElementById('btnStrategy1').disabled = false;
+                        setStatus(cfg.statusId, 'Error: ' + data.error, 'error');
+                        clearInterval(scanIntervals[strategyKey]);
+                        scanIntervals[strategyKey] = null;
+                        document.getElementById(cfg.btnId).disabled = false;
                         return;
                     }
                     
                     if (progress >= 100 && !data.running) {
-                        clearInterval(scanInterval);
-                        scanInterval = null;
+                        clearInterval(scanIntervals[strategyKey]);
+                        scanIntervals[strategyKey] = null;
                         const results = data.results || [];
-                        setStatus(`Scan complete — ${results.length} symbols found`, 'success');
-                        document.getElementById('btnStrategy1').disabled = false;
-                        displayResults(results);
                         
-                        // Send to webhook if configured
-                        const webhookUrl = document.getElementById('webhookUrl').value.trim();
-                        if (webhookUrl) {
-                            sendToWebhook(webhookUrl, results);
+                        if (cfg.type === 'crossover') {
+                            setStatus(`✓ Scan complete — ${results.length} crossovers detected`, 'success');
+                            document.getElementById(cfg.btnId).disabled = false;
+                            displayCrossoverResults(cfg.resultsId, results);
+                        } else {
+                            setStatus(`✓ Scan complete — ${results.length} symbols found`, 'success');
+                            document.getElementById(cfg.btnId).disabled = false;
+                            displayTrendResults(cfg.resultsId, results);
                         }
                     }
                 })
                 .catch(err => {
-                    setStatus('Polling error: ' + err, 'error');
+                    setStatus(cfg.statusId, 'Polling error: ' + err, 'error');
                 });
         }
         
-        // ===== Display Results =====
-        function displayResults(results) {
+        // ===== Display Trend Results =====
+        function displayTrendResults(resultsContainerId, results) {
             if (!results || results.length === 0) {
-                document.getElementById('resultsContainer').innerHTML = 
-                    `<div class="results-wrapper"><div class="empty-state">No symbols matched the criteria.</div></div>`;
+                document.getElementById(resultsContainerId).innerHTML = 
+                    `<div class="results-wrapper"><div class="status" style="padding:20px;">No symbols matched the criteria.</div></div>`;
                 return;
             }
             
@@ -820,43 +1043,50 @@
                 </tr>`;
             });
             html += '</tbody></table></div></div>';
-            document.getElementById('resultsContainer').innerHTML = html;
+            document.getElementById(resultsContainerId).innerHTML = html;
         }
         
-        // ===== Webhook =====
-        function sendToWebhook(url, results) {
-            const statusEl = document.getElementById('webhookStatus');
-            const payload = {
-                strategy: 'bullish_trend',
-                strategy_name: 'Bullish Trend',
-                timestamp: new Date().toISOString(),
-                count: results.length,
-                results: results
-            };
+        // ===== Display Crossover Results =====
+        function displayCrossoverResults(resultsContainerId, results) {
+            if (!results || results.length === 0) {
+                document.getElementById(resultsContainerId).innerHTML = 
+                    `<div class="results-wrapper"><div class="status" style="padding:20px;">No crossovers detected in this scan.</div></div>`;
+                return;
+            }
             
-            fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
-            })
-            .then(res => {
-                if (res.ok) {
-                    statusEl.textContent = `✓ Results sent to n8n (${results.length} symbols)`;
-                    statusEl.className = 'webhook-status ok';
-                } else {
-                    throw new Error('HTTP ' + res.status);
-                }
-            })
-            .catch(err => {
-                statusEl.textContent = `✗ Webhook failed: ${err.message}`;
-                statusEl.className = 'webhook-status err';
-                console.error('Webhook error:', err);
+            let html = `<div class="results-wrapper">
+                <div class="results-header">
+                    <span class="results-title">Crossovers Detected</span>
+                    <span class="results-count">${results.length} signals</span>
+                </div>
+                <div class="table-scroll">
+                <table>
+                <thead><tr>
+                    <th>#</th><th>Symbol</th><th>Type</th><th>Price</th><th>EMA50</th><th>EMA200</th>
+                </tr></thead><tbody>`;
+            
+            results.forEach((r, index) => {
+                const shortSymbol = (r.symbol || '').split('/')[0];
+                const crossType = r.cross_type || 'BULLISH';
+                const crossClass = crossType === 'BULLISH' ? 'cross-bullish' : 'cross-bearish';
+                const crossLabel = crossType === 'BULLISH' ? '▲ BULL' : '▼ BEAR';
+                const link = r.tradingview_link || '#';
+                html += `<tr>
+                    <td>${String(index + 1).padStart(2, '0')}</td>
+                    <td><a href="${link}" target="_blank" class="symbol-link">${shortSymbol}</a></td>
+                    <td><span class="${crossClass}">${crossLabel}</span></td>
+                    <td class="price">$${r.price || '—'}</td>
+                    <td class="ema">$${r.ema50 || '—'}</td>
+                    <td class="ema">$${r.ema200 || '—'}</td>
+                </tr>`;
             });
+            html += '</tbody></table></div></div>';
+            document.getElementById(resultsContainerId).innerHTML = html;
         }
         
         // ===== Helpers =====
-        function setStatus(text, type) {
-            const el = document.getElementById('statusText');
+        function setStatus(id, text, type) {
+            const el = document.getElementById(id);
             if (!el) return;
             el.textContent = text;
             el.className = 'status';
