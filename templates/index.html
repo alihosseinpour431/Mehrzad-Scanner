@@ -219,12 +219,6 @@
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
         }
-        
-        .icon-pullback {
-            background: var(--blue-bg);
-            color: var(--blue);
-            border: 1px solid rgba(41, 98, 255, 0.2);
-        }
 
         .icon-webhook {
             background: var(--accent-bg);
@@ -245,12 +239,6 @@
             background: var(--bull-bg);
             color: var(--bull);
             border: 1px solid rgba(38, 166, 154, 0.2);
-        }
-        
-        .badge-pullback {
-            background: var(--blue-bg);
-            color: var(--blue);
-            border: 1px solid rgba(41, 98, 255, 0.2);
         }
         
         .card-body {
@@ -353,16 +341,6 @@
         .btn-futures:hover {
             background: #2bbbad;
             box-shadow: 0 4px 12px rgba(38, 166, 154, 0.3);
-        }
-        
-        .btn-pullback {
-            background: var(--blue);
-            color: white;
-            border-color: var(--blue);
-        }
-        .btn-pullback:hover {
-            background: #3d73ff;
-            box-shadow: 0 4px 12px rgba(41, 98, 255, 0.3);
         }
         
         .btn:active {
@@ -487,26 +465,6 @@
         .status.scanning { color: var(--accent); }
         .status.success { color: var(--bull); }
         .status.error { color: var(--bear); }
-        
-        /* ===== DIVIDER ===== */
-        .divider {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin: 24px 0;
-            color: var(--text-muted);
-            font-family: var(--mono);
-            font-size: 10px;
-            letter-spacing: 2px;
-        }
-        
-        .divider::before,
-        .divider::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border-subtle);
-        }
         
         .hidden { display: none !important; }
         
@@ -689,18 +647,18 @@
                            placeholder="https://your-n8n.instance/webhook/xxxx-xxxx-xxxx">
                 </div>
                 <div class="webhook-hint">
-                    Results will be POSTed as JSON to this URL after each scan completes.
+                    Results will be POSTed as JSON to this URL after scan completes.
                 </div>
                 <div class="webhook-status" id="webhookStatus"></div>
             </div>
         </div>
         
-        <!-- Strategy 1: Bullish Trend -->
+        <!-- Strategy: Bullish Trend -->
         <div class="scanner-card">
             <div class="card-header">
                 <div class="card-title">
                     <div class="card-icon icon-futures">📈</div>
-                    <span>Strategy 1 · Bullish Trend</span>
+                    <span>Bullish Trend Scanner</span>
                 </div>
                 <span class="card-badge badge-futures">USDT-M</span>
             </div>
@@ -711,94 +669,45 @@
                     <code>H1</code> Price &gt; EMA(50) &gt; EMA(200)
                 </div>
                 
-                <button class="btn btn-futures" id="btnStrategy1" onclick="startScan('trend')">
+                <button class="btn btn-futures" id="btnStrategy1" onclick="startScan()">
                     <span>▶</span>
                     <span>START SCAN</span>
                 </button>
                 
-                <div class="progress-container" id="progressTrendContainer">
+                <div class="progress-container" id="progressContainer">
                     <div class="progress-header">
                         <span class="progress-label">Scanning</span>
-                        <span class="progress-percent" id="progressPercentTrend">0%</span>
+                        <span class="progress-percent" id="progressPercent">0%</span>
                     </div>
                     <div class="progress-bar">
-                        <div class="progress-fill" id="progressTrend" style="width: 0%"></div>
+                        <div class="progress-fill" id="progressBar" style="width: 0%"></div>
                     </div>
                     <div class="stats">
                         <div class="stat-box">
                             <span class="stat-label">Scanned</span>
-                            <span class="stat-value" id="scannedTrend">0</span>
+                            <span class="stat-value" id="scannedCount">0</span>
                         </div>
                         <div class="stat-box">
                             <span class="stat-label">Found</span>
-                            <span class="stat-value accent" id="foundTrend">0</span>
+                            <span class="stat-value accent" id="foundCount">0</span>
                         </div>
                     </div>
-                    <div class="status" id="statusTrend">Ready</div>
+                    <div class="status" id="statusText">Ready</div>
                 </div>
                 
-                <div id="resultsTrend"></div>
-            </div>
-        </div>
-        
-        <div class="divider">◆ ◆ ◆</div>
-        
-        <!-- Strategy 2: Pullback Entry -->
-        <div class="scanner-card">
-            <div class="card-header">
-                <div class="card-title">
-                    <div class="card-icon icon-pullback">🔄</div>
-                    <span>Strategy 2 · Pullback Entry</span>
-                </div>
-                <span class="card-badge badge-pullback">PULLBACK</span>
-            </div>
-            
-            <div class="card-body">
-                <div class="filter-info">
-                    <code>D1</code> Price &gt; EMA(50) &nbsp;·&nbsp; 
-                    <code>H1</code> Price &lt; EMA(50) &nbsp;·&nbsp; 
-                    <code>H1</code> EMA(50) &gt; EMA(200)
-                </div>
-                
-                <button class="btn btn-pullback" id="btnStrategy2" onclick="startScan('pullback')">
-                    <span>▶</span>
-                    <span>START SCAN</span>
-                </button>
-                
-                <div class="progress-container" id="progressPullbackContainer">
-                    <div class="progress-header">
-                        <span class="progress-label">Scanning</span>
-                        <span class="progress-percent" id="progressPercentPullback">0%</span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" id="progressPullback" style="width: 0%"></div>
-                    </div>
-                    <div class="stats">
-                        <div class="stat-box">
-                            <span class="stat-label">Scanned</span>
-                            <span class="stat-value" id="scannedPullback">0</span>
-                        </div>
-                        <div class="stat-box">
-                            <span class="stat-label">Found</span>
-                            <span class="stat-value accent" id="foundPullback">0</span>
-                        </div>
-                    </div>
-                    <div class="status" id="statusPullback">Ready</div>
-                </div>
-                
-                <div id="resultsPullback"></div>
+                <div id="resultsContainer"></div>
             </div>
         </div>
         
         <!-- Footer -->
         <div class="footer">
-            XT SCANNER <span>v3.0</span> · FUTURES DUAL STRATEGY · 2026
+            XT SCANNER <span>v4.0</span> · BULLISH TREND · 2026
         </div>
     </div>
 
     <script>
         const SERVER_URL = window.location.origin;
-        const scanIntervals = {};
+        let scanInterval = null;
         
         // ===== DateTime =====
         function updateDateTime() {
@@ -811,111 +720,76 @@
         setInterval(updateDateTime, 1000);
         updateDateTime();
         
-        // ===== Strategy Config =====
-        const STRATEGIES = {
-            trend: {
-                btnId: 'btnStrategy1',
-                progressContainerId: 'progressTrendContainer',
-                progressId: 'progressTrend',
-                percentId: 'progressPercentTrend',
-                scannedId: 'scannedTrend',
-                foundId: 'foundTrend',
-                statusId: 'statusTrend',
-                resultsId: 'resultsTrend',
-                startEndpoint: '/start_futures_trend',
-                statusEndpoint: '/futures_status_trend',
-                name: 'Bullish Trend'
-            },
-            pullback: {
-                btnId: 'btnStrategy2',
-                progressContainerId: 'progressPullbackContainer',
-                progressId: 'progressPullback',
-                percentId: 'progressPercentPullback',
-                scannedId: 'scannedPullback',
-                foundId: 'foundPullback',
-                statusId: 'statusPullback',
-                resultsId: 'resultsPullback',
-                startEndpoint: '/start_futures_pullback',
-                statusEndpoint: '/futures_status_pullback',
-                name: 'Pullback Entry'
-            }
-        };
-        
         // ===== Start Scan =====
-        function startScan(strategyKey) {
-            const cfg = STRATEGIES[strategyKey];
-            if (!cfg) return;
+        function startScan() {
+            document.getElementById('btnStrategy1').disabled = true;
+            document.getElementById('progressContainer').style.display = 'block';
+            setStatus('Connecting...', 'scanning');
+            document.getElementById('resultsContainer').innerHTML = '';
             
-            document.getElementById(cfg.btnId).disabled = true;
-            document.getElementById(cfg.progressContainerId).style.display = 'block';
-            setStatus(cfg.statusId, 'Connecting...', 'scanning');
-            document.getElementById(cfg.resultsId).innerHTML = '';
-            
-            fetch(`${SERVER_URL}${cfg.startEndpoint}`)
+            fetch(`${SERVER_URL}/start_futures_trend`)
                 .then(res => res.json())
                 .then(data => {
                     if (data.status === 'started' || data.status === 'already_running') {
-                        if (scanIntervals[strategyKey]) clearInterval(scanIntervals[strategyKey]);
-                        scanIntervals[strategyKey] = setInterval(() => checkScanStatus(strategyKey), 2000);
+                        if (scanInterval) clearInterval(scanInterval);
+                        scanInterval = setInterval(checkScanStatus, 2000);
                     } else {
-                        setStatus(cfg.statusId, 'Unexpected response: ' + JSON.stringify(data), 'error');
-                        document.getElementById(cfg.btnId).disabled = false;
+                        setStatus('Unexpected response: ' + JSON.stringify(data), 'error');
+                        document.getElementById('btnStrategy1').disabled = false;
                     }
                 })
                 .catch(err => {
-                    setStatus(cfg.statusId, 'Error: ' + err, 'error');
-                    document.getElementById(cfg.btnId).disabled = false;
+                    setStatus('Error: ' + err, 'error');
+                    document.getElementById('btnStrategy1').disabled = false;
                 });
         }
         
         // ===== Check Status =====
-        function checkScanStatus(strategyKey) {
-            const cfg = STRATEGIES[strategyKey];
-            
-            fetch(`${SERVER_URL}${cfg.statusEndpoint}`)
+        function checkScanStatus() {
+            fetch(`${SERVER_URL}/futures_status_trend`)
                 .then(res => res.json())
                 .then(data => {
                     const progress = data.progress || 0;
                     const total = data.total || 0;
                     const scanned = Math.floor((progress / 100) * total);
                     
-                    document.getElementById(cfg.progressId).style.width = progress + '%';
-                    document.getElementById(cfg.percentId).textContent = progress + '%';
-                    document.getElementById(cfg.scannedId).textContent = scanned;
-                    document.getElementById(cfg.foundId).textContent = (data.results || []).length;
+                    document.getElementById('progressBar').style.width = progress + '%';
+                    document.getElementById('progressPercent').textContent = progress + '%';
+                    document.getElementById('scannedCount').textContent = scanned;
+                    document.getElementById('foundCount').textContent = (data.results || []).length;
                     
                     if (data.error) {
-                        setStatus(cfg.statusId, 'Error: ' + data.error, 'error');
-                        clearInterval(scanIntervals[strategyKey]);
-                        scanIntervals[strategyKey] = null;
-                        document.getElementById(cfg.btnId).disabled = false;
+                        setStatus('Error: ' + data.error, 'error');
+                        clearInterval(scanInterval);
+                        scanInterval = null;
+                        document.getElementById('btnStrategy1').disabled = false;
                         return;
                     }
                     
                     if (progress >= 100 && !data.running) {
-                        clearInterval(scanIntervals[strategyKey]);
-                        scanIntervals[strategyKey] = null;
+                        clearInterval(scanInterval);
+                        scanInterval = null;
                         const results = data.results || [];
-                        setStatus(cfg.statusId, `Scan complete — ${results.length} symbols found`, 'success');
-                        document.getElementById(cfg.btnId).disabled = false;
-                        displayResults(cfg.resultsId, results);
+                        setStatus(`Scan complete — ${results.length} symbols found`, 'success');
+                        document.getElementById('btnStrategy1').disabled = false;
+                        displayResults(results);
                         
                         // Send to webhook if configured
                         const webhookUrl = document.getElementById('webhookUrl').value.trim();
                         if (webhookUrl) {
-                            sendToWebhook(webhookUrl, strategyKey, cfg.name, results);
+                            sendToWebhook(webhookUrl, results);
                         }
                     }
                 })
                 .catch(err => {
-                    setStatus(cfg.statusId, 'Polling error: ' + err, 'error');
+                    setStatus('Polling error: ' + err, 'error');
                 });
         }
         
         // ===== Display Results =====
-        function displayResults(resultsContainerId, results) {
+        function displayResults(results) {
             if (!results || results.length === 0) {
-                document.getElementById(resultsContainerId).innerHTML = 
+                document.getElementById('resultsContainer').innerHTML = 
                     `<div class="results-wrapper"><div class="empty-state">No symbols matched the criteria.</div></div>`;
                 return;
             }
@@ -946,15 +820,15 @@
                 </tr>`;
             });
             html += '</tbody></table></div></div>';
-            document.getElementById(resultsContainerId).innerHTML = html;
+            document.getElementById('resultsContainer').innerHTML = html;
         }
         
         // ===== Webhook =====
-        function sendToWebhook(url, strategyKey, strategyName, results) {
+        function sendToWebhook(url, results) {
             const statusEl = document.getElementById('webhookStatus');
             const payload = {
-                strategy: strategyKey,
-                strategy_name: strategyName,
+                strategy: 'bullish_trend',
+                strategy_name: 'Bullish Trend',
                 timestamp: new Date().toISOString(),
                 count: results.length,
                 results: results
@@ -981,8 +855,8 @@
         }
         
         // ===== Helpers =====
-        function setStatus(id, text, type) {
-            const el = document.getElementById(id);
+        function setStatus(text, type) {
+            const el = document.getElementById('statusText');
             if (!el) return;
             el.textContent = text;
             el.className = 'status';
