@@ -205,6 +205,89 @@ def scan_spot_trend():
         spot_trend_status['running'] = False
 
 # ==========================================
+# ==========================================
+# GET SYMBOLS DATA (5m Timeframe)
+# دریافت داده‌های فعلی EMA50 و EMA200 برای ارزهای ارسالی
+# ==========================================
+
+def get_symbols_data(symbols, market_type='futures'):
+    """
+    دریافت داده‌های فعلی Price, EMA50, EMA200 در تایم‌فریم 5 دقیقه
+    برای هر ارز، وضعیت فعلی را برمی‌گرداند
+    
+    Parameters:
+    - symbols: لیست symbols به فرمت ['BTC/USDT:USDT', 'ETH/USDT:USDT', ...]
+    - market_type: 'futures' یا 'spot'
+    
+    Returns:
+    - لیستی از دیکشنری‌ها با فیلدهای:
+      Symbol, Price, EMA50, EMA200, Distance%, TradingView Link, Timestamp
+    """
+    try:
+        if market_type == 'futures':
+            exchange = ccxt.xt({
+                'enableRateLimit': True,
+                'options': {'defaultType': 'swap'}
+            })
+        else:
+            exchange = ccxt.xt({
+                'enableRateLimit': True,
+                'options': {'defaultType': 'spot'}
+            })
+        
+        results = []
+        
+        for symbol in symbols:
+            try:
+                # دریافت 250 کندل 5 دقیقه‌ای (برای محاسبه EMA200)
+                ohlcv = exchange.fetch_ohlcv(symbol, timeframe='5m', limit=250)
+                
+                if len(ohlcv) < 200:
+                    print(f"Skipping {symbol}: not enough data ({len(ohlcv)} candles)")
+                    continue
+                
+                df = pd.DataFrame(
+                    ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume']
+                )
+                
+                # محاسبه EMA
+                ema50 = calculate_ema(df['close'], 50)
+                ema200 = calculate_ema(df['close'], 200)
+                
+                # مقادیر فعلی
+                current_price = df['close'].iloc[-1]
+                current_ema50 = ema50.iloc[-1]
+                current_ema200 = ema200.iloc[-1]
+                
+                # محاسبه Distance% (فاصله Price از EMA50)
+                distance_pct = ((current_price - current_ema50) / current_ema50) * 100
+                
+                # ساخت لینک TradingView
+                tv_link = get_tradingview_link(symbol)
+                
+                # اضافه کردن به نتایج
+                results.append({
+                    'Symbol': symbol,
+                    'Price': round(current_price, 8),
+                    'EMA50': round(current_ema50, 8),
+                    'EMA200': round(current_ema200, 8),
+                    'Distance%': round(distance_pct, 2),
+                    'TradingView Link': tv_link,
+                    'Timestamp': pd.Timestamp.now().isoformat()
+                })
+                
+                time.sleep(0.15)  # Rate limiting
+                
+            except Exception as e:
+                print(f"Error fetching data for {symbol}: {e}")
+                continue
+        
+        return results
+        
+    except Exception as e:
+        print(f"Error in get_symbols_data: {e}")
+        return {'error': str(e)}
+# ==========================================
 # EMA CROSSOVER DETECTION (5m Timeframe)
 # برای Futures و Spot - فقط ارزهای ارسالی از n8n
 # ==========================================
