@@ -205,7 +205,6 @@ def scan_spot_trend():
         spot_trend_status['running'] = False
 
 # ==========================================
-# ==========================================
 # GET SYMBOLS DATA (5m Timeframe)
 # دریافت داده‌های فعلی EMA50 و EMA200 برای ارزهای ارسالی
 # ==========================================
@@ -287,11 +286,11 @@ def get_symbols_data(symbols, market_type='futures'):
     except Exception as e:
         print(f"Error in get_symbols_data: {e}")
         return {'error': str(e)}
+
 # ==========================================
 # EMA CROSSOVER DETECTION (5m Timeframe)
 # برای Futures و Spot - فقط ارزهای ارسالی از n8n
 # ==========================================
-
 
 def detect_ema_crossovers(symbols, market_type='futures'):
     """
@@ -368,10 +367,6 @@ def detect_ema_crossovers(symbols, market_type='futures'):
                 continue
         
         return crossovers
-        
-    except Exception as e:
-        return {'error': str(e)}
-
         
     except Exception as e:
         return {'error': str(e)}
@@ -463,6 +458,51 @@ def api_spot_crossover():
     return jsonify({
         "crossovers": crossovers,
         "count": len(crossovers) if isinstance(crossovers, list) else 0,
+        "timestamp": pd.Timestamp.now().isoformat()
+    })
+
+# ===== API Endpoint 3: Get Symbols Data (از n8n) =====
+@app.route('/api/symbols_data', methods=['POST'])
+def api_symbols_data():
+    """
+    دریافت داده‌های فعلی Price, EMA50, EMA200 برای ارزهای خاص
+    Input: {"symbols": ["BTC/USDT:USDT", "ETH/USDT:USDT", ...]}
+    Output: {
+        "data": [
+            {
+                "Symbol": "BTC/USDT:USDT",
+                "Price": 50000.0,
+                "EMA50": 49500.0,
+                "EMA200": 48000.0,
+                "Distance%": 1.01,
+                "TradingView Link": "https://...",
+                "Timestamp": "2026-06-27T..."
+            },
+            ...
+        ],
+        "count": N
+    }
+    """
+    data = request.get_json()
+    
+    if not data or 'symbols' not in data:
+        return jsonify({"error": "symbols list is required"}), 400
+    
+    symbols = data['symbols']
+    
+    if not isinstance(symbols, list) or len(symbols) == 0:
+        return jsonify({"error": "symbols must be a non-empty list"}), 400
+    
+    print(f"Fetching data for {len(symbols)} symbols...")
+    symbols_data = get_symbols_data(symbols, market_type='futures')
+    
+    # اگر error برگشت
+    if isinstance(symbols_data, dict) and 'error' in symbols_data:
+        return jsonify(symbols_data), 500
+    
+    return jsonify({
+        "data": symbols_data,
+        "count": len(symbols_data),
         "timestamp": pd.Timestamp.now().isoformat()
     })
 
