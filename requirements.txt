@@ -1,9 +1,4 @@
-flask
-ccxt
-pandas
-numpy
-fpdf2
-gunicorn
-jdatetime
-pytz
-requests
+Flask==3.0.0
+ccxt==4.2.25
+pandas==2.1.4
+gunicorn==21.2.0
