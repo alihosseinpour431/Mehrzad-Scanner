@@ -209,14 +209,12 @@ def scan_spot_trend():
 # برای Futures و Spot - فقط ارزهای ارسالی از n8n
 # ==========================================
 
+
 def detect_ema_crossovers(symbols, market_type='futures'):
     """
-    بررسی تقاطع EMA50 و EMA200 در تایم‌فریم 5 دقیقه
-    فقط برای ارزهای مشخص‌شده
-    
-    Parameters:
-    - symbols: لیست symbols به فرمت ['BTC/USDT:USDT', 'ETH/USDT:USDT', ...]
-    - market_type: 'futures' یا 'spot'
+    بررسی وضعیت فعلی EMA50 و EMA200 در تایم‌فریم 5 دقیقه
+    اگر EMA50 > EMA200 = BULLISH (و بالعکس)
+    هر بار که شیت از n8n می‌آید، وضعیت فعلی را برمی‌گرداند
     """
     try:
         if market_type == 'futures':
@@ -231,11 +229,9 @@ def detect_ema_crossovers(symbols, market_type='futures'):
             })
         
         crossovers = []
-        total = len(symbols)
         
-        for i, symbol in enumerate(symbols):
+        for symbol in symbols:
             try:
-                # دریافت OHLCV 5 دقیقه (250 کندل برای محاسبه EMA200)
                 ohlcv = exchange.fetch_ohlcv(symbol, timeframe='5m', limit=250)
                 
                 if len(ohlcv) < 200:
@@ -245,25 +241,32 @@ def detect_ema_crossovers(symbols, market_type='futures'):
                     ohlcv, columns=['timestamp', 'open', 'high', 'low', 'close', 'volume']
                 )
                 
-                # محاسبه EMA
                 ema50 = calculate_ema(df['close'], 50)
                 ema200 = calculate_ema(df['close'], 200)
                 
-                # بررسی crossover در 2 کندل آخر
                 current_ema50 = ema50.iloc[-1]
                 current_ema200 = ema200.iloc[-1]
                 prev_ema50 = ema50.iloc[-2]
                 prev_ema200 = ema200.iloc[-2]
                 
-                # Bullish crossover: EMA50 crosses above EMA200
-                bullish_cross = prev_ema50 <= prev_ema200 and current_ema50 > current_ema200
+                # crossover در 3 کندل اخیر چک می‌کنیم (نه فقط 1 کندل)
+                recent_bullish = False
+                recent_bearish = False
                 
-                # Bearish crossover: EMA50 crosses below EMA200
-                bearish_cross = prev_ema50 >= prev_ema200 and current_ema50 < current_ema200
+                for j in range(-3, 0):
+                    e50_cur = ema50.iloc[j]
+                    e200_cur = ema200.iloc[j]
+                    e50_prv = ema50.iloc[j - 1]
+                    e200_prv = ema200.iloc[j - 1]
+                    
+                    if e50_prv <= e200_prv and e50_cur > e200_cur:
+                        recent_bullish = True
+                    if e50_prv >= e200_prv and e50_cur < e200_cur:
+                        recent_bearish = True
                 
-                if bullish_cross or bearish_cross:
+                if recent_bullish or recent_bearish:
                     current_price = df['close'].iloc[-1]
-                    cross_type = 'BULLISH' if bullish_cross else 'BEARISH'
+                    cross_type = 'BULLISH' if recent_bullish else 'BEARISH'
                     
                     crossovers.append({
                         'symbol': symbol,
@@ -275,13 +278,17 @@ def detect_ema_crossovers(symbols, market_type='futures'):
                         'tradingview_link': get_tradingview_link(symbol)
                     })
                 
-                time.sleep(0.15)  # Rate limiting
+                time.sleep(0.15)
                 
             except Exception as e:
                 print(f"Error checking {symbol}: {e}")
                 continue
         
         return crossovers
+        
+    except Exception as e:
+        return {'error': str(e)}
+
         
     except Exception as e:
         return {'error': str(e)}
